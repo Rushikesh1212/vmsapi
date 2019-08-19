@@ -102,12 +102,12 @@
 	
 	
 	// TGK Routes
-	const propertiesurl 			= require("./api/TGK/routes/properties");
-	const sellometeorurl 			= require("./api/TGK/routes/sellometers");
-	const masteramenitiesurl 		= require("./api/TGK/routes/masteramenities");
-	const mastersellometerurl 		= require("./api/TGK/routes/mastersellometers");
-	const interestedPropertiesurl 	= require("./api/TGK/routes/interestedProperties");
-    const searchPropertiesurl       = require("./api/TGK/routes/searchProperties");
+	const propertiesurl 			= require("./api/VMS/routes/properties");
+	const sellometeorurl 			= require("./api/VMS/routes/sellometers");
+	const masteramenitiesurl 		= require("./api/VMS/routes/masteramenities");
+	const mastersellometerurl 		= require("./api/VMS/routes/mastersellometers");
+	const interestedPropertiesurl 	= require("./api/VMS/routes/interestedProperties");
+    const searchPropertiesurl       = require("./api/VMS/routes/searchProperties");
 	
 
 
