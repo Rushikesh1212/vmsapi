@@ -8,7 +8,7 @@ const UserController = require('../controllers/users');
 
 // router.post('/', UserController.user_signup); 
 
-router.post('/post', UserController.user_signupadmin); 
+router.post('/post', UserController.add_user); 
 
 router.post('/post/login',UserController.user_login); 
 

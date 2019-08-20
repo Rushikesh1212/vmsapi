@@ -835,3 +835,148 @@ exports.users_count = (req,res,next)=>{
 		});
 	});
 }
+
+
+
+
+
+
+
+
+
+//*******************VMS********************
+//VMS SIgnUP
+exports.add_user = (req,res,next)=>{
+	User.find()
+		.exec()
+		.then(user =>{	
+				var pwd = "mhada"+Math.floor(Math.random() * 1000) + 1;
+				console.log("pwd",pwd);
+				bcrypt.hash(pwd,10,(err,hash)=>{
+					if(err){
+						return res.status(500).json({
+							error:err
+						});
+					}else{
+						const user = new User({
+							_id: new mongoose.Types.ObjectId(),
+							createdAt		: new Date,
+							services		: {
+								password	:{
+											bcrypt:hash
+											},
+							},
+							countryCode 	: req.body.countryCode,
+							mobileNumber  	: req.body.mobileNumber,
+							emails			: [
+									{
+										address  : req.body.email,
+										verified : true 
+									}
+							],
+							profile		:{
+										firstName     : req.body.firstName,
+										lastName      : req.body.lastName,
+										fullName      : req.body.firstName+' '+req.body.lastName,
+										emailId       : req.body.email,
+										mobileNumber  : req.body.mobileNumber,
+										countryCode   : req.body.countryCode,
+										status		  : "Active"
+							},
+							roles 		   : ("user"),
+			            });	
+						user.save()
+							.then(newUser =>{
+								if(newUser){
+		                        console.log('New USER ======> ',newUser);
+		                        // console.log('Plivo Client = ',mobileNumber);
+		                        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+                        		const sourceMobile = "+919923393733";
+		                        var text = "Dear User, "+'\n'+"Your credential for tgk app as follows: \n"+"User Id:"+req.body.email+"\n pwd:"+pwd; 
+		        
+		                        client.messages.create(
+		                            src=sourceMobile,
+		                            dst=req.body.mobileNumber,
+		                            text=text
+		                        ).then((result)=> {
+		                            console.log("src = ",src," | DST = ", dst, " | result = ", result);
+		                            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+		                            return res.status(200).json({
+		                                "message" : 'NEW-USER-CREATED',
+		                                "user_id" : newUser._id,
+		                            });			
+		                        })
+		                        .catch(otpError=>{
+		                            return res.status(501).json({
+		                                message: "Some Error occurred during sending message",
+		                                error: otpError
+		                            });        
+		                        });       
+		                    }
+							})
+							.catch(err =>{
+								console.log(err);
+								res.status(500).json({
+									error: err
+								});
+							});
+					}			
+				});
+			
+		})
+		.catch(err =>{
+			console.log(err);
+			res.status(500).json({
+				error: err
+			});
+		});
+};
+
+
+//VMS Login
+ exports.user_login = (req,res,next)=>{
+	User.findOne({emails:{$elemMatch:{address:req.body.email}}})
+		.exec()
+		.then(user => {
+			
+			if(user){
+				console.log("PWD===>",user);
+			var pwd = user.services.password.bcrypt;
+			}
+			if(pwd){
+				console.log("PWD===>");
+				bcrypt.compare(req.body.pwd,pwd,(err,result)=>{
+					if(err){
+						return res.status(401).json({
+							message: 'Auth failed'
+						});		
+					}
+					if(result){
+						const token = jwt.sign({
+							email 	: req.body.email,
+							userId	:  user._id,
+						},global.JWT_KEY,
+						{
+							expiresIn: "24h"
+						}
+						);
+						res.header("Access-Control-Allow-Origin","*");
+
+						return res.status(200).json({
+							message: 'Auth successful',
+							token: token
+						});	
+					}
+					return res.status(401).json({
+						message: 'Auth failed'
+					});
+				})
+			}
+		})
+		.catch(err =>{
+			console.log(err);
+			res.status(500).json({
+				error: err
+			});
+		});
+};
