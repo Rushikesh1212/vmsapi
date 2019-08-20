@@ -880,7 +880,7 @@ exports.add_user = (req,res,next)=>{
 										fullName      : req.body.firstName+' '+req.body.lastName,
 										emailId       : req.body.email,
 										mobileNumber  : req.body.mobileNumber,
-										countryCode   : req.body.countryCode,
+										countryCode   : "+91",
 										status		  : "Active"
 							},
 							roles 		   : ("user"),
