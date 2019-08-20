@@ -4,14 +4,81 @@ const jwt			= require("jsonwebtoken");
 const plivo 		= require('plivo');
 const User 			= require('../models/users');
 
-exports.user_signupadmin = (req,res,next)=>{
+// exports.user_signupadmin = (req,res,next)=>{
 
-	User.find()
-		.exec()
-		.then(user =>{
+// 	User.find()
+// 		.exec()
+// 		.then(user =>{
 		
 				
-				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
+// 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
+// 					if(err){
+// 						return res.status(500).json({
+// 							error:err
+// 						});
+// 					}else{
+// 						const user = new User({
+// 							_id: new mongoose.Types.ObjectId(),
+// 							createdAt		: new Date,
+// 							services		: {
+// 								password	:{
+// 											bcrypt:hash
+// 											},
+// 							},
+// 							countryCode 	: req.body.countryCode,
+// 							mobileNumber  	: req.body.mobileNumber,
+// 							emails			: [
+// 									{
+// 										address  : req.body.email,
+// 										verified : true 
+// 									}
+// 							],
+// 							profile		:{
+// 										firstName     : req.body.firstName,
+// 										lastName      : req.body.lastName,
+// 										fullName      : req.body.firstName+' '+req.body.lastName,
+// 										emailId       : req.body.emailId,
+// 										mobileNumber  : req.body.mobileNumber,
+// 										countryCode   : req.body.countryCode,
+// 										status		  : req.body.status
+// 							},
+// 							roles 		   : (req.body.roles),
+// 							officeLocation : req.body.officeLocation,
+// 			            });	
+// 						user.save()
+// 							.then(result =>{
+// 								res.status(201).json({
+// 									message : "NEW-USER-CREATED",
+// 									"user_id" : user._id,
+//                         			// "otp"     : OTP,
+// 								})
+// 							})
+// 							.catch(err =>{
+// 								console.log(err);
+// 								res.status(500).json({
+// 									error: err
+// 								});
+// 							});
+// 					}			
+// 				});
+			
+// 		})
+// 		.catch(err =>{
+// 			console.log(err);
+// 			res.status(500).json({
+// 				error: err
+// 			});
+// 		});
+// };
+
+
+exports.user_signupadmin = (req,res,next)=>{
+	User.find()
+		.exec()
+		.then(user =>{	
+				var pwd = "mhada"+Math.floor(Math.random() * 1000) + 1;
+				console.log("pwd",pwd);
+				bcrypt.hash(pwd,10,(err,hash)=>{
 					if(err){
 						return res.status(500).json({
 							error:err
@@ -37,7 +104,7 @@ exports.user_signupadmin = (req,res,next)=>{
 										firstName     : req.body.firstName,
 										lastName      : req.body.lastName,
 										fullName      : req.body.firstName+' '+req.body.lastName,
-										emailId       : req.body.emailId,
+										emailId       : req.body.email,
 										mobileNumber  : req.body.mobileNumber,
 										countryCode   : req.body.countryCode,
 										status		  : req.body.status
@@ -70,9 +137,6 @@ exports.user_signupadmin = (req,res,next)=>{
 			});
 		});
 };
-
-
-
 
 exports.update_user_resetpassword = (req,res,next)=>{
 	// var roleData = req.body.role;

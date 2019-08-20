@@ -5,7 +5,7 @@
 	const mongoose 						= require ('mongoose');
 	var nodeMailer   					= require('nodemailer');
 
-	const dbname = "qatgk";
+	const dbname = "vms";
 	global.JWT_KEY = "secret";
 
 	mongoose.connect('mongodb://localhost/'+dbname,{
