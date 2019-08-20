@@ -980,3 +980,20 @@ exports.add_user = (req,res,next)=>{
 			});
 		});
 };
+
+// Users List
+exports.users_list = (req,res,next)=>{
+	User.find({roles : {$ne : "admin"} })
+		.exec()
+		.then(users =>{
+			console.log('users ',users);
+			res.status(200).json(users);
+		})
+		.catch(err =>{
+			console.log(err);
+			res.status(500).json({
+				error: err
+			});
+		});
+	
+}
