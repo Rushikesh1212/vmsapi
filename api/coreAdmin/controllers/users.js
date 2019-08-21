@@ -847,10 +847,19 @@ const User 			= require('../models/users');
 //*******************VMS********************
 //VMS SIgnUP
 exports.add_user = (req,res,next)=>{
-	User.find()
+	User.findOne({"emails.address":req.body.email})
 		.exec()
-		.then(user =>{	
-				var pwd = "mhada"+Math.floor(Math.random() * 1000) + 1;
+		.then(user =>{
+			if(user){
+				return res.status(200).json({
+					message:"USER-ALREADY-EXIST"
+				});
+			}else{
+				if(req.body.role === "User"){
+					var pwd = "mhada"+Math.floor(Math.random() * 1000) + 1;
+				}else{
+					var pwd =req.body.pwd;
+				}	
 				console.log("pwd",pwd);
 				bcrypt.hash(pwd,10,(err,hash)=>{
 					if(err){
@@ -883,7 +892,7 @@ exports.add_user = (req,res,next)=>{
 										countryCode   : "+91",
 										status		  : "Active"
 							},
-							roles 		   : ("user"),
+							roles 		   : (req.body.role),
 			            });	
 						user.save()
 							.then(newUser =>{
@@ -922,7 +931,7 @@ exports.add_user = (req,res,next)=>{
 							});
 					}			
 				});
-			
+			}
 		})
 		.catch(err =>{
 			console.log(err);
@@ -935,23 +944,28 @@ exports.add_user = (req,res,next)=>{
 
 //VMS Login
  exports.user_login = (req,res,next)=>{
-	User.findOne({emails:{$elemMatch:{address:req.body.email}}})
+ 	console.log("req.body.email",req.body.email)
+	User.findOne({"emails.address":req.body.email,roles:"User"})
 		.exec()
 		.then(user => {
-			
+			console.log("user",user)
 			if(user){
 				console.log("PWD===>",user);
 			var pwd = user.services.password.bcrypt;
 			}
+			console.log("pwd",req.body.pwd)
 			if(pwd){
 				console.log("PWD===>");
 				bcrypt.compare(req.body.pwd,pwd,(err,result)=>{
 					if(err){
+						console.log("Inside 1")
 						return res.status(401).json({
 							message: 'Auth failed'
 						});		
 					}
 					if(result){
+						console.log("Inside 2")
+
 						const token = jwt.sign({
 							email 	: req.body.email,
 							userId	:  user._id,
@@ -967,6 +981,63 @@ exports.add_user = (req,res,next)=>{
 							token: token
 						});	
 					}
+						console.log("Inside 1")
+
+					return res.status(401).json({
+						message: 'Auth failed'
+					});
+				})
+			}
+		})
+		.catch(err =>{
+			console.log(err);
+			res.status(500).json({
+				error: err
+			});
+		});
+};
+
+//admin Login
+ exports.admin_login = (req,res,next)=>{
+ 	console.log("req.body.email",req.body.email)
+	User.findOne({"emails.address":req.body.email,"roles":"Admin"})
+		.exec()
+		.then(user => {
+			console.log("user",user)
+			if(user){
+				console.log("PWD===>",user);
+			var pwd = user.services.password.bcrypt;
+			}
+			console.log("pwd",req.body.pwd)
+			if(pwd){
+				console.log("PWD===>");
+				bcrypt.compare(req.body.pwd,pwd,(err,result)=>{
+					if(err){
+						console.log("Inside 1")
+						return res.status(401).json({
+							message: 'Auth failed'
+						});		
+					}
+					if(result){
+						console.log("Inside 2")
+
+						const token = jwt.sign({
+							email 	: req.body.email,
+							userId	:  user._id,
+						},global.JWT_KEY,
+						{
+							expiresIn: "24h"
+						}
+						);
+						res.header("Access-Control-Allow-Origin","*");
+
+						return res.status(200).json({
+							message: 'Auth successful',
+							token: token
+						});	
+					}
+						console.log("Inside 1")
+
 					return res.status(401).json({
 						message: 'Auth failed'
 					});
@@ -983,7 +1054,7 @@ exports.add_user = (req,res,next)=>{
 
 // Users List
 exports.users_list = (req,res,next)=>{
-	User.find({roles : {$ne : "admin"} })
+	User.find({roles : {$ne : "Admin"} }, {"profile.fullName":1,"profile.mobileNumber":1,"profile.emailId":1})
 		.sort({createdAt:-1})
 		.exec()
 		.then(users =>{
@@ -1052,3 +1123,4 @@ exports.delete_user = function (req, res,next) {
         });
     });
 };
+
