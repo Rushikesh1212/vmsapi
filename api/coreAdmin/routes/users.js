@@ -56,6 +56,8 @@ router.get('/get/list', UserController.users_list);
 
 router.delete('/delete/one/:userID',UserController.delete_user);
 
-router.patch('/patch/one/:userID',UserController.update_user); 
+router.patch('/patch/one/updateUser/:userID',UserController.update_user);
+
+router.patch('/patch/one/resetPassword/:userID',UserController.reset_password); 
 
 module.exports = router;
