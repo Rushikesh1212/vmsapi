@@ -856,7 +856,20 @@ exports.add_user = (req,res,next)=>{
 				});
 			}else{
 				if(req.body.role === "User"){
-					var pwd = "madha"+Math.floor(Math.random() * 1000) + 1;
+				var userName =""
+				var pwd 		= "madha"+Math.floor(Math.random() * 1000) + 1;
+				User.find()
+                  .exec()
+                  .then(data =>{
+						 userName    = "madha"+data.length+1;
+						console.log("userName",userName);
+					 })
+	                  .catch(err =>{
+	                      console.log(err);
+	                      res.status(500).json({
+	                          error: err
+	                      });
+	                  });
 				}else{
 					var pwd =req.body.pwd;
 				}	
@@ -897,30 +910,30 @@ exports.add_user = (req,res,next)=>{
 						user.save()
 							.then(newUser =>{
 								if(newUser){
-		                        console.log('New USER ======> ',newUser);
+		                        // console.log('New USER ======> ',newUser);
 		                        // console.log('Plivo Client = ',mobileNumber);
-		                        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-                        		const sourceMobile = "+919923393733";
-		                        var text = "Dear User, "+'\n'+"Your credential for tgk app as follows: \n"+"User Id:"+req.body.email+"\n pwd:"+pwd; 
-		        
-		                        client.messages.create(
-		                            src=sourceMobile,
-		                            dst=req.body.mobileNumber,
-		                            text=text
-		                        ).then((result)=> {
-		                            console.log("src = ",src," | DST = ", dst, " | result = ", result);
+		      //                   const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+        //                 		const sourceMobile = "+919923393733";
+		      //                   var text = "Dear User,-"+userName+'\n'+"Your credential for app as follows: \n"+"Email Id:"+req.body.email+"\n pwd:"+pwd; 
+		      //   				console.log("src = ",sourceMobile," | text = ", req.body.mobileNumber);
+		      //                   client.messages.create(
+								// 	src=sourceMobile,
+								// 	dst=req.body.countryCode+''+req.body.mobileNumber,
+								// 	text=text
+								// ).then((result)=> {
+		                            // console.log("src = ",src," | DST = ", dst, " | result = ", result);
 		                            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 		                            return res.status(200).json({
 		                                "message" : 'NEW-USER-CREATED',
 		                                "user_id" : newUser._id,
 		                            });			
-		                        })
-		                        .catch(msgError=>{
-		                            return res.status(501).json({
-		                                message: "Some Error occurred during sending message",
-		                                error: msgError
-		                            });        
-		                        });       
+		                        // })
+		                        // .catch(msgError=>{
+		                        //     return res.status(501).json({
+		                        //         message: "Some Error occurred during sending message",
+		                        //         error: msgError
+		                        //     });        
+		                        // });       
 		                    }
 							})
 							.catch(err =>{
@@ -1054,7 +1067,7 @@ exports.add_user = (req,res,next)=>{
 
 // Users List
 exports.users_list = (req,res,next)=>{
-	User.find({roles : {$ne : "Admin"} }, {"profile.fullName":1,"profile.mobileNumber":1,"profile.emailId":1})
+	User.find({roles : {$ne : "Admin"} }, {"profile.firstName":1,"profile.lastName":1,"profile.fullName":1,"profile.mobileNumber":1,"profile.emailId":1})
 		.sort({createdAt:-1})
 		.exec()
 		.then(users =>{
@@ -1076,7 +1089,7 @@ exports.update_user = (req,res,next)=>{
 	console.log("req.params.userID",req.params.userID);
 
     User.updateOne(
-            { _id:req.params.userID},  
+            { _id:req.body.userID},  
             {
                 $set:{
 				
@@ -1133,7 +1146,6 @@ exports.reset_password = (req,res,next)=>{
 	}else{
 		var pwd =req.body.pwd;
 	}	
-			console.log("pwd",pwd);
 			bcrypt.hash(pwd,10,(err,hash)=>{
 				if(err){
 					return res.status(500).json({
@@ -1159,28 +1171,30 @@ exports.reset_password = (req,res,next)=>{
 					console.log('data =========>>>',data);
 			        res.status(200).json("User Updated");
 						if(resetPassword){
-		                    const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-		            		const sourceMobile = "+919923393733";
-		                    var text = "Dear User, "+'\n'+"Your credential for tgk app as follows: \n"+"User Id:"+req.body.email+"\n pwd:"+pwd; 
-		    
-		                    client.messages.create(
-		                        src=sourceMobile,
-		                        dst=req.body.mobileNumber,
-		                        text=text
-		                    ).then((result)=> {
-		                        console.log("src = ",src," | DST = ", dst, " | result = ", result);
-		                        // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+	                        // console.log('New USER ======> ',newUser);
+		                        // console.log('Plivo Client = ',mobileNumber);
+		      //                   const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+        //                 		const sourceMobile = "+919923393733";
+		      //                   var text = "Dear User,-"+userName+'\n'+"Your credential for app as follows: \n"+"Email Id:"+req.body.email+"\n pwd:"+pwd; 
+		      //   				console.log("src = ",sourceMobile," | text = ", req.body.mobileNumber);
+		      //                   client.messages.create(
+								// 	src=sourceMobile,
+								// 	dst=req.body.countryCode+''+req.body.mobileNumber,
+								// 	text=text
+								// ).then((result)=> {
+		                            // console.log("src = ",src," | DST = ", dst, " | result = ", result);
+		                            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 		                        return res.status(200).json({
 		                            "message" : 'RESET-PASSWORD',
 		                            "user_id" : resetPassword._id,
 		                        });			
-		                    })
-		                    .catch(msgError=>{
-		                        return res.status(501).json({
-		                            message: "Some Error occurred during sending message",
-		                            error: msgError
-		                        });        
-		                    });       
+		                    // })
+		                    // .catch(msgError=>{
+		                    //     return res.status(501).json({
+		                    //         message: "Some Error occurred during sending message",
+		                    //         error: msgError
+		                    //     });        
+		                    // });       
 						}else{
 					        res.status(401).json("PASSWORD_RESET_FAILED");
 					    }
