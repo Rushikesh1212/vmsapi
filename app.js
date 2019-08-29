@@ -38,8 +38,11 @@
 	// const companyserttingsurl 				= require("./api/coreAdmin/routes/companysettings");
 	const rolesurl 							= require("./api/coreAdmin/routes/roles");
 	const projectSettingsurl 				= require("./api/coreAdmin/routes/projectSettings");
-	
+	const SchemaUrl 						= require("./api/coreAdmin/routes/schema");
+	const InsertSchemaUrl 					= require("./api/coreAdmin/routes/schema");
 
+	app.use("/api/schema",SchemaUrl);
+	app.use("/api/insertSchema",InsertSchemaUrl);
 	app.use("/api/masternotifications",masternotificationsurl);
 	app.use("/api/usersotp",usersOTPBasedLogin);
 	app.use("/api/users",usersurl);

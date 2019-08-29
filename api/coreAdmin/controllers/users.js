@@ -847,7 +847,7 @@ const User 			= require('../models/users');
 //*******************VMS********************
 //VMS SIgnUP
 exports.add_user = (req,res,next)=>{
-	User.findOne({"emails.address":req.body.email})
+	User.findOne({"emails.address":req.body.emailId})
 		.exec()
 		.then(user =>{
 			if(user){
@@ -900,7 +900,7 @@ exports.add_user = (req,res,next)=>{
 										firstName     : req.body.firstName,
 										lastName      : req.body.lastName,
 										fullName      : req.body.firstName+' '+req.body.lastName,
-										emailId       : req.body.email,
+										emailId       : req.body.emailId,
 										mobileNumber  : req.body.mobileNumber,
 										countryCode   : "+91",
 										status		  : "Active"
@@ -1086,10 +1086,9 @@ exports.users_list = (req,res,next)=>{
 //update user
 exports.update_user = (req,res,next)=>{
 	// var roleData = req.body.role;
-	console.log("req.params.userID",req.params.userID);
 
     User.updateOne(
-            { _id:req.body.userID},  
+            { _id:req.body.userId},  
             {
                 $set:{
 				
@@ -1141,11 +1140,8 @@ exports.delete_user = function (req, res,next) {
 exports.reset_password = (req,res,next)=>{
 	// var roleData = req.body.role;
 	console.log("req.params.userID",req.params.userID);
-	if(req.body.role === "User"){
 		var pwd = "madha"+Math.floor(Math.random() * 1000) + 1;
-	}else{
-		var pwd =req.body.pwd;
-	}	
+
 			bcrypt.hash(pwd,10,(err,hash)=>{
 				if(err){
 					return res.status(500).json({

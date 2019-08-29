@@ -2,6 +2,7 @@ const mongoose	= require("mongoose");
 
 const Properties        = require('../models/properties');
 const InterestedProps   = require('../models/interestedProperties');
+const Voters   = require('../models/voters');
 
 
 // ===================== round robin ================
