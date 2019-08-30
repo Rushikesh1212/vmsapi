@@ -1,5 +1,5 @@
 const mongoose	= require("mongoose");
-const Voters        = require('../models/schema');
+const Voters        = require('../models/voter');
 
 exports.create_Voters = (req,res,next)=>{
     console.log('req=>',req.body.length);
@@ -86,4 +86,48 @@ exports.voters_list = (req,res,next)=>{
             });
         });
     
+}
+
+
+exports.update_VoterData = (req,res,next)=>{
+    // var roleData = req.body.role;
+    Voter.updateOne(
+        { "_id" : req.body.voter_id },                        
+        {
+            $set:{
+                mobileNumber      : req.body.mobileNumber,
+                whatsAppNumber    : req.body.whatsAppNumber,
+                dead              : req.body.dead,
+                visited           : req.body.visited,
+                voted             : req.body.voted,
+                changeAddress     : req.body.changeAddress,
+                areaName          : req.body.areaName,
+                otherInfo         : req.body.otherInfo,
+                dob               : req.body.dob,
+                emailId           : req.body.emailId,
+                aadharCard        : req.body.aadharCard,
+                color             : req.body.color,
+                cast              : req.body.cast,
+                favourite         : req.body.favourite,
+                voterUpdateStatus : {
+                    "UserId"          : req.body.userId,
+                    "updatedAt"       : new Date(),
+                },
+            }
+        }
+    )
+        .exec()
+        .then(data=>{
+            if(data.nModified == 1){                
+                res.status(200).json("Voter Updated");
+            }else{
+                res.status(401).json("Voter Not Found");
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 }

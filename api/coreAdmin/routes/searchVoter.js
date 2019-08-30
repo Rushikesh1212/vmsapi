@@ -3,7 +3,7 @@ const router 	= express.Router();
 
 const searchPropertiesController = require('../controllers/search');
 
-router.post('/properties', searchPropertiesController.searchProperties);
+router.post('/voters', searchPropertiesController.searchVoters);
 
 
 module.exports = router;

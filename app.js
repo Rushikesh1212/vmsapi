@@ -32,95 +32,15 @@
 	});
 
 	// CoreAdmin Routes 
-	const masternotificationsurl 			= require("./api/coreAdmin/routes/masternotifications");
-	const usersOTPBasedLogin 				= require("./api/coreAdmin/routes/otpBasedLogin");
-	const usersurl 							= require("./api/coreAdmin/routes/users");	
-	// const companyserttingsurl 				= require("./api/coreAdmin/routes/companysettings");
-	const rolesurl 							= require("./api/coreAdmin/routes/roles");
-	const projectSettingsurl 				= require("./api/coreAdmin/routes/projectSettings");
-	const SchemaUrl 						= require("./api/coreAdmin/routes/schema");
-	const InsertSchemaUrl 					= require("./api/coreAdmin/routes/schema");
+	const usersUrl 							= require("./api/coreAdmin/routes/users");	
+	const VotersUrl 						= require("./api/coreAdmin/routes/voter");
+	const SearchUrl 						= require("./api/coreAdmin/routes/searchVoter");
 
-	app.use("/api/schema",SchemaUrl);
-	app.use("/api/insertSchema",InsertSchemaUrl);
-	app.use("/api/masternotifications",masternotificationsurl);
-	app.use("/api/usersotp",usersOTPBasedLogin);
-	app.use("/api/users",usersurl);
-	// app.use("/api/companysettings",companyserttingsurl);
-	app.use("/api/roles",rolesurl);
-	app.use("/api/projectSettings",projectSettingsurl);
+	app.use("/api/users",usersUrl);
+	app.use("/api/voters",VotersUrl);
+	app.use("/api/search",SearchUrl);
 
 	
-	const TgkSpecificCompanysettingsurl 	= require("./api/coreAdmin/routes/tgkspecific/tgkSpecificcompanysettings");
-	// const TgkSpecificuserssurl 				= require("./api/coreAdmin/routes/tgkspecific/tgkspecificusers");
-	
-	app.use("/api/tgkSpecificcompanysettings",TgkSpecificCompanysettingsurl);
-
-	app.post('/send-email', (req, res)=> {
-		console.log('send mail');
-		let transporter = nodeMailer.createTransport({
-			
-			host: 'smtp.gmail.com',
-			port: 587,
-			auth: {
-				user: 'testtprm321@gmail.com',
-				pass: 'tprm1234'
-			}
-		});
-		console.log('after transport');
-		let mailOptions = {
-			
-			from   : '"TGK" <testtprm321@gmail.com>', // sender address
-			to     : req.body.email, // list of receivers
-			subject: req.body.subject, // Subject line
-			text   : req.body.text, // plain text body
-			html   : req.body.mail // html body
-		};
-		console.log('after mailoption');
-		//name email mobilenumber message
-		// console.log("mailOptions",mailOptions);
-		
-		transporter.sendMail(mailOptions, (error, info) => {
-			console.log('in mail');
-			if (error) {
-				
-				console.log("send mail error",error);
-				return "Failed";
-			}
-			if(info){
-				console.log('in info');
-				// return "Success";
-				res.status(200).json({ 
-					
-					message: "Success",
-					// return "Success",
-
-				});
-			}
-	
-			res.render('index');
-		});
-	});
-
-	
-	
-	// TGK Routes
-	const propertiesurl 			= require("./api/VMS/routes/properties");
-	const sellometeorurl 			= require("./api/VMS/routes/sellometers");
-	const masteramenitiesurl 		= require("./api/VMS/routes/masteramenities");
-	const mastersellometerurl 		= require("./api/VMS/routes/mastersellometers");
-	const interestedPropertiesurl 	= require("./api/VMS/routes/interestedProperties");
-    const searchPropertiesurl       = require("./api/VMS/routes/searchProperties");
-	
-
-
-	app.use("/api/properties",propertiesurl);
-	app.use("/api/sellometers",sellometeorurl);
-	app.use("/api/masteramenities",masteramenitiesurl);
-	app.use("/api/mastersellometers",mastersellometerurl);
-	app.use("/api/interestedProperties",interestedPropertiesurl);
-	app.use("/api/search",searchPropertiesurl);
-
 
 	app.use((req, res, next) => {
 		const error = new Error("Not found");
