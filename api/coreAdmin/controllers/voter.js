@@ -91,7 +91,8 @@ exports.voters_list = (req,res,next)=>{
 
 exports.update_VoterData = (req,res,next)=>{
     // var roleData = req.body.role;
-    Voter.updateOne(
+    console.log("req.body",req.body);
+    Voters.updateOne(
         { "_id" : req.body.voter_id },                        
         {
             $set:{
