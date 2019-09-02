@@ -151,7 +151,8 @@ exports.add_user = (req,res,next)=>{
 
 						return res.status(200).json({
 							message: 'Auth successful',
-							token: token
+							token: token,
+							user_ID:user._id,
 						});	
 					}
 						console.log("Inside 1")
@@ -206,7 +207,8 @@ exports.add_user = (req,res,next)=>{
 
 						return res.status(200).json({
 							message: 'Auth successful',
-							token: token
+							token: token,
+							user_ID:user._id,
 						});	
 					}
 						console.log("Inside 1")

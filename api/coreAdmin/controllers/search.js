@@ -21,7 +21,20 @@ exports.searchVoters = (req,res,next)=>{
 
   }
 
+  // for age ----------------------------------------------------
+  if(req.body.voterAgeFrom != "" && req.body.voterAgeTo){
+    selector.push({"age" : {$gt : voterAgeFrom, $lte : voterAgeTo } });
+  }
 
+  // for idNumber ----------------------------------------------------
+  if(req.body.idNumber != ""){
+    selector.push({"idNumber" : idNumber });
+  }
+
+   // for boothName ----------------------------------------------------
+  if(req.body.boothName != ""){
+    selector.push({"boothName" : boothName });
+  }
 
   console.log("selector = ", JSON.stringify(selector));
 
