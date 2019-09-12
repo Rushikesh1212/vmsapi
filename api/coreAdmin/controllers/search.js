@@ -9,36 +9,36 @@ exports.searchVoters = (req,res,next)=>{
   var selector = [];
 
 // for voterName ----------------------------------------------------
-    if(req.body.voterName != ""){
-    var voterName = req.body.voterName.trim();
+    if(req.body.voterName && req.body.voterName != ""){
+    var voterName = req.body.voterName;
     var voterNameArray = [];
 
-    voterNameArray.push({"firstName" : voterName.trim()});      
-    voterNameArray.push({"middleName" : voterName.trim()});
-    voterNameArray.push({"lastName" : voterName.trim()});
+    voterNameArray.push({"firstName" : {"$regex": voterName, $options: "i"}});      
+    voterNameArray.push({"middleName" : {"$regex": voterName, $options: "i"}});
+    voterNameArray.push({"lastName" : {"$regex": voterName, $options: "i"}});
 
-    selector.push({$or : locArray });
+    selector.push({$or : voterNameArray });
 
   }
 
   // for age ----------------------------------------------------
   if(req.body.voterAgeFrom != "" && req.body.voterAgeTo){
-    selector.push({"age" : {$gt : voterAgeFrom, $lte : voterAgeTo } });
+    selector.push({"age" : {$gt : req.body.voterAgeFrom, $lte : req.body.voterAgeTo } });
   }
 
   // for idNumber ----------------------------------------------------
-  if(req.body.idNumber != ""){
-    selector.push({"idNumber" : idNumber });
+  if(req.body.idNumber && req.body.idNumber != ""){
+    selector.push({"idNumber" : req.body.idNumber });
   }
 
    // for boothName ----------------------------------------------------
   if(req.body.boothName != ""){
-    selector.push({"boothName" : boothName });
+    selector.push({"boothName" : {"$regex":req.body.boothName,$options: "i"}});
   }
 
   console.log("selector = ", JSON.stringify(selector));
 
-  Voters.find({ $and : selector })
+  Voters.find({ $or : selector})
       .sort({"voterCreatedAt" : -1})
       .exec()
       .then(searchResults=>{

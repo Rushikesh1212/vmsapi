@@ -1,9 +1,9 @@
 const express 	= require("express");
 const router 	= express.Router();
 
-const searchPropertiesController = require('../controllers/search');
+const searchVoterController = require('../controllers/search');
 
-router.post('/voters', searchPropertiesController.searchVoters);
+router.post('/voters', searchVoterController.searchVoters);
 
 
 module.exports = router;

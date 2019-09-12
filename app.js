@@ -35,10 +35,12 @@
 	const usersUrl 							= require("./api/coreAdmin/routes/users");	
 	const VotersUrl 						= require("./api/coreAdmin/routes/voter");
 	const SearchUrl 						= require("./api/coreAdmin/routes/searchVoter");
+	const ReportUrl 						= require("./api/coreAdmin/routes/report");
 
 	app.use("/api/users",usersUrl);
 	app.use("/api/voters",VotersUrl);
 	app.use("/api/search",SearchUrl);
+	app.use("/api/report",ReportUrl);
 
 	
 

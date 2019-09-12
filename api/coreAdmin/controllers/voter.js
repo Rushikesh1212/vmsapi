@@ -109,6 +109,13 @@ exports.single_voter = (req,res,next)=>{
 
 exports.update_VoterData = (req,res,next)=>{
     console.log("req.body.userId",req.body.userId);
+    // var d = new Date();
+    // var month = '' + (d.getMonth() + 1);  
+    // var day   = '' + d.getDate();         
+    // var year  = d.getFullYear();          
+
+    // var currDate =  day+'-'+month+'-'+year;
+
     User.findOne({"_id" : req.body.userId})
         .exec()
         .then(user=>{
@@ -164,4 +171,22 @@ exports.update_VoterData = (req,res,next)=>{
             });
         });
 }
+
+//delete voter
+exports.delete_voter = function (req, res,next) {
+    console.log("a");
+    Voters.deleteOne({
+        _id: req.params.voterId
+    }, function (err) {
+        if(err){
+            return res.json({
+                error: err
+            });
+        }
+        res.json({
+            status: "success",
+            message: 'Voter deleted'
+        });
+    });
+};
 
