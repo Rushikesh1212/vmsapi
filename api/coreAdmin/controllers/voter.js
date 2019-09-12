@@ -159,7 +159,7 @@ exports.update_VoterData = (req,res,next)=>{
             .catch(err =>{
                 console.log(err);
                 res.status(500).json({
-                    error: err
+                    error1: err
                 });
             });
 
@@ -167,7 +167,7 @@ exports.update_VoterData = (req,res,next)=>{
           .catch(err =>{
             console.log(err);
             res.status(500).json({
-                error: err
+                error2: err
             });
         });
 }

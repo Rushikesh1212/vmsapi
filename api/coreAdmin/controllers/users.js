@@ -326,9 +326,8 @@ exports.reset_password = (req,res,next)=>{
 			.then(resetPassword=>{
 			    console.log('resetPassword ',resetPassword);
 			    if(resetPassword.nModified == 1){
-					console.log('data =========>>>',data);
-			        res.status(200).json("User Updated");
-						if(resetPassword){
+					// console.log('data =========>>>',data);
+								// if(resetPassword){
 	                        // console.log('New USER ======> ',newUser);
 		                        // console.log('Plivo Client = ',mobileNumber);
 		      //                   const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
@@ -344,7 +343,6 @@ exports.reset_password = (req,res,next)=>{
 		                            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 		                        return res.status(200).json({
 		                            "message" : 'RESET-PASSWORD',
-		                            "user_id" : resetPassword._id,
 		                        });			
 		                    // })
 		                    // .catch(msgError=>{
@@ -353,9 +351,9 @@ exports.reset_password = (req,res,next)=>{
 		                    //         error: msgError
 		                    //     });        
 		                    // });       
-						}else{
-					        res.status(401).json("PASSWORD_RESET_FAILED");
-					    }
+						// }else{
+					 //        res.status(401).json("PASSWORD_RESET_FAILED");
+					 //    }
 			    }else{
 			        res.status(401).json("PASSWORD_RESET_FAILED");
 			    }
