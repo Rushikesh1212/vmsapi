@@ -7,7 +7,7 @@ const User 			= require('../models/users');
 //*******************VMS********************
 //VMS SIgnUP
 exports.add_user = (req,res,next)=>{
-	User.findOne({"emails.address":req.body.emailId})
+	User.findOne({"emails.address":req.body.email})
 		.exec()
 		.then(user =>{
 			if(user){

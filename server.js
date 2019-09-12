@@ -1,6 +1,6 @@
 const http = require('http');
 const app = require('./app'); // app file include
-const port = process.env.PORT || 5020;
+const port = process.env.PORT || 5014;
 
 const server = http.createServer(app);
 
