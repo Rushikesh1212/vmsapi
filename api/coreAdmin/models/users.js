@@ -20,6 +20,7 @@ const userSchema = mongoose.Schema({
 	emails		 : [
 							{
 								address:{type:String},
+								userName:String,
 								verified: Boolean
 							}
 					],

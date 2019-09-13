@@ -3,6 +3,7 @@ const bcrypt		= require("bcrypt");
 const jwt			= require("jsonwebtoken");
 const plivo 		= require('plivo');
 const User 			= require('../models/users');
+const axios 		= require('axios');
 
 //*******************VMS********************
 //VMS SIgnUP
@@ -10,6 +11,7 @@ exports.add_user = (req,res,next)=>{
 	User.findOne({"emails.address":req.body.email})
 		.exec()
 		.then(user =>{
+			console.log("user",user)
 			if(user){
 				return res.status(200).json({
 					message:"USER-ALREADY-EXIST"
@@ -21,7 +23,8 @@ exports.add_user = (req,res,next)=>{
 				User.find()
                   .exec()
                   .then(data =>{
-						 userName    = "madha"+data.length+1;
+                  	var data1=data.length+101
+						 userName    = "Madha"+data1;
 						console.log("userName",userName);
 					 })
 	                  .catch(err =>{
@@ -53,6 +56,7 @@ exports.add_user = (req,res,next)=>{
 							emails			: [
 									{
 										address  : req.body.email,
+										userName : userName,
 										verified : true 
 									}
 							],
@@ -70,30 +74,21 @@ exports.add_user = (req,res,next)=>{
 						user.save()
 							.then(newUser =>{
 								if(newUser){
-		                        // console.log('New USER ======> ',newUser);
-		                        // console.log('Plivo Client = ',mobileNumber);
-		      //                   const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-        //                 		const sourceMobile = "+919923393733";
-		      //                   var text = "Dear User,-"+userName+'\n'+"Your credential for app as follows: \n"+"Email Id:"+req.body.email+"\n pwd:"+pwd; 
-		      //   				console.log("src = ",sourceMobile," | text = ", req.body.mobileNumber);
-		      //                   client.messages.create(
-								// 	src=sourceMobile,
-								// 	dst=req.body.countryCode+''+req.body.mobileNumber,
-								// 	text=text
-								// ).then((result)=> {
-		                            // console.log("src = ",src," | DST = ", dst, " | result = ", result);
-		                            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+								var text = "Dear "+req.body.firstName+',\n'+"Your credential for app as follows: \n"+"Username : "+userName+"\nPassword : "+pwd+"\nThank You!"; 	
+								const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+req.body.mobileNumber+"&message="+text+"&senderid=TESTBK&accusage=1"
+								axios.get(url)
+							      .then(response => {
 		                            return res.status(200).json({
 		                                "message" : 'NEW-USER-CREATED',
 		                                "user_id" : newUser._id,
 		                            });			
-		                        // })
-		                        // .catch(msgError=>{
-		                        //     return res.status(501).json({
-		                        //         message: "Some Error occurred during sending message",
-		                        //         error: msgError
-		                        //     });        
-		                        // });       
+		                        })
+		                        .catch(msgError=>{
+		                            return res.status(501).json({
+		                                message: "Some Error occurred during sending message",
+		                                error: msgError
+		                            });        
+		                        });       
 		                    }
 							})
 							.catch(err =>{
@@ -117,14 +112,18 @@ exports.add_user = (req,res,next)=>{
 
 //VMS Login
  exports.user_login = (req,res,next)=>{
- 	console.log("req.body.email",req.body.email)
-	User.findOne({"emails.address":req.body.email,roles:"User"})
+ 	console.log("req.body.userName",req.body.userName)
+	User.findOne({"emails.userName":req.body.userName,roles:"User"})
 		.exec()
 		.then(user => {
 			console.log("user",user)
 			if(user){
 				console.log("PWD===>",user);
 			var pwd = user.services.password.bcrypt;
+			}else{
+				return res.status(401).json({
+					message: 'Auth failed'
+				});	
 			}
 			console.log("pwd",req.body.pwd)
 			if(pwd){
@@ -326,34 +325,34 @@ exports.reset_password = (req,res,next)=>{
 			.then(resetPassword=>{
 			    console.log('resetPassword ',resetPassword);
 			    if(resetPassword.nModified == 1){
-					// console.log('data =========>>>',data);
-								// if(resetPassword){
-	                        // console.log('New USER ======> ',newUser);
-		                        // console.log('Plivo Client = ',mobileNumber);
-		      //                   const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-        //                 		const sourceMobile = "+919923393733";
-		      //                   var text = "Dear User,-"+userName+'\n'+"Your credential for app as follows: \n"+"Email Id:"+req.body.email+"\n pwd:"+pwd; 
-		      //   				console.log("src = ",sourceMobile," | text = ", req.body.mobileNumber);
-		      //                   client.messages.create(
-								// 	src=sourceMobile,
-								// 	dst=req.body.countryCode+''+req.body.mobileNumber,
-								// 	text=text
-								// ).then((result)=> {
-		                            // console.log("src = ",src," | DST = ", dst, " | result = ", result);
-		                            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
-		                        return res.status(200).json({
-		                            "message" : 'RESET-PASSWORD',
-		                        });			
-		                    // })
-		                    // .catch(msgError=>{
-		                    //     return res.status(501).json({
-		                    //         message: "Some Error occurred during sending message",
-		                    //         error: msgError
-		                    //     });        
-		                    // });       
-						// }else{
-					 //        res.status(401).json("PASSWORD_RESET_FAILED");
-					 //    }
+			    	User.find({_id:req.params.userID})
+					.exec()
+					.then(user=>{
+						console.log("user",user);
+						if(user && user.length>0){
+								console.log("inside=>>>>")
+								var text = "Dear "+user[0].profile.firstName+',\n'+"Your New credential for app as follows: \n"+"Username : "+user[0].emails[0].userName+"\nPassword : "+pwd+"\nThank You!"; 	
+								const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+user[0].profile.mobileNumber+"&message="+text+"&senderid=TESTBK&accusage=1"
+								axios.get(url)
+							      .then(response => {
+			                        return res.status(200).json({
+			                            "message" : 'RESET-PASSWORD',
+			                        });			
+			                    })
+			                    .catch(msgError=>{
+			                        return res.status(501).json({
+			                            message: "Some Error occurred during sending message",
+			                            error: msgError
+			                        });        
+			                    });
+	                		}
+	                   	})
+	                   	.catch(err =>{
+						    console.log(err);
+						    res.status(500).json({
+						        error: err
+						    });
+						});     
 			    }else{
 			        res.status(401).json("PASSWORD_RESET_FAILED");
 			    }
