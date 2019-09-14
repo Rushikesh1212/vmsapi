@@ -228,7 +228,7 @@ exports.add_user = (req,res,next)=>{
 
 // Users List
 exports.users_list = (req,res,next)=>{
-	User.find({roles : {$ne : "Admin"} }, {"profile.firstName":1,"profile.lastName":1,"profile.fullName":1,"profile.mobileNumber":1,"profile.emailId":1})
+	User.find({roles : {$ne : "Admin"}})
 		.sort({createdAt:-1})
 		.exec()
 		.then(users =>{
