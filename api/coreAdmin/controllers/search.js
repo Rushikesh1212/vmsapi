@@ -28,7 +28,7 @@ exports.searchVoters = (req,res,next)=>{
 
   // for idNumber ----------------------------------------------------
   if(req.body.idNumber && req.body.idNumber != ""){
-    selector.push({"idNumber" : req.body.idNumber });
+    selector.push({"idNumber" : {"$regex":req.body.idNumber,$options: "i"}});
   }
 
    // for boothName ----------------------------------------------------
