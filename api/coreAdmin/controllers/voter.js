@@ -190,3 +190,70 @@ exports.delete_voter = function (req, res,next) {
     });
 };
 
+
+//voter  Family
+ exports.voter_family = (req,res,next)=>{
+ var selector=[]
+  Voters.findOne({"_id":req.params.voterId})
+    .exec()
+    .then(voter => {
+        var voterNameArray = [];
+        voterNameArray.push({"firstName"  : voter.firstName});      
+        voterNameArray.push({"middleName" : voter.middleName});
+        voterNameArray.push({"lastName"   : voter.lastName});
+        selector.push({$or : voterNameArray });
+        if(voter){
+             Voters.find({ $or : selector})
+              .sort({"voterCreatedAt" : -1})
+              .exec()
+              .then(searchResults=>{
+                  res.status(200).json(searchResults);
+                })
+              .catch(err =>{
+                  console.log(err);
+                  res.status(500).json({
+                      message : "No Data Found",
+                      error   : err
+                  });
+              });
+        }else{
+            res.status(401).json("Voter Not Found");
+        }
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+//distinct booth
+ exports.distinct_booth = (req,res,next)=>{
+  Voters.distinct('boothName')
+    .exec()
+    .then(boothName => {
+        res.status(200).json(boothName);
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+//display voters as per booth
+ exports.booth_voters = (req,res,next)=>{
+  Voters.find({'boothName':req.body.boothName})
+    .exec()
+    .then(voter => {
+        res.status(200).json(voter);
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
