@@ -296,6 +296,34 @@ exports.delete_user = function (req, res,next) {
     });
 };
 
+//Active Inactive
+exports.user_status = function (req, res,next) {
+    User.updateOne(
+	    { _id:req.body.userId},  
+	    {
+	        $set:{
+				"profile.status"     : req.body.userStatus,	
+	        }
+         }
+        )
+        .exec()
+        .then(data=>{
+            console.log('data ',data);
+            if(data.nModified == 1){
+				// console.log('data =========>>>',data);
+                res.status(200).json("User "+req.body.userStatus);
+            }else{
+                res.status(401).json("Not Updated");
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
 
 //Regenerate Password
 exports.reset_password = (req,res,next)=>{
