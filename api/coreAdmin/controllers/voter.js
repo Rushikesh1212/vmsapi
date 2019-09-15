@@ -197,11 +197,11 @@ exports.delete_voter = function (req, res,next) {
   Voters.findOne({"_id":req.params.voterId})
     .exec()
     .then(voter => {
+        if(voter){
         var voterNameArray = [];
         voterNameArray.push({"firstName"  : voter.middleName,"lastName"   : voter.lastName});      
         voterNameArray.push({"middleName" : voter.firstName,"lastName"   : voter.lastName});
         selector.push({$or : voterNameArray });
-        if(voter){
              Voters.find({ $or : selector})
               .sort({"voterCreatedAt" : -1})
               .exec()
