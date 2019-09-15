@@ -20,4 +20,6 @@ router.post('/boothVoters', SchemaController.booth_voters);
 
 router.get('/duplicateVoters', SchemaController.duplicate_voters);
 
+router.post('/boothList', SchemaController.booth_list);
+
 module.exports = router;
