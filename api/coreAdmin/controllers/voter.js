@@ -228,9 +228,64 @@ exports.delete_voter = function (req, res,next) {
     });
 };
 
+
 //distinct booth
  exports.distinct_booth = (req,res,next)=>{
-  Voters.distinct('boothName')
+            Voters.aggregate([
+               {$group: { _id: "$boothName",
+                        total: {$sum: 1},
+                        Gender: {
+                            $push: {
+                                male: {$cond: [{$eq: ["$gender", "M"]}, 1, 0]},
+                                female: {$cond: [{$eq: ["$gender", "F"]}, 1, 0]},
+                            }
+                          }
+              },
+            },
+
+             
+            ])
+            .exec()
+            .then(boothName => {
+                var boothList=[] 
+                var male = 0;
+                var female = 0;
+                var total =0;
+                for (var i = boothName.length - 1; i > 0; i--) {
+                    for (var j = boothName[i].Gender.length - 1; j >= 0; j--) {
+                        if(boothName[i].Gender[j].male===1){
+                                male=male+1;
+                        }else{
+                            female =female+1;
+                        }
+                        total=male+female
+
+                        }
+                        var booth={
+                            boothName : boothName[i]._id,
+                            male      : male,
+                            female    : female,
+                            total     : total,
+                        }
+                        if(i<boothName.length){
+                            boothList.push(booth)
+                        }
+                    }
+
+                res.status(200).json(boothList);
+                 
+            })
+            .catch(err =>{
+              console.log(err);
+              res.status(500).json({
+                error: err
+              });
+            });
+};
+
+//display voters as per booth
+ exports.booth_voters = (req,res,next)=>{
+  Voters.find({'boothName':req.body.boothName})
     .exec()
     .then(boothName => {
         res.status(200).json(boothName);
@@ -243,12 +298,20 @@ exports.delete_voter = function (req, res,next) {
     });
 };
 
+
+
 //display voters as per booth
- exports.booth_voters = (req,res,next)=>{
-  Voters.find({'boothName':req.body.boothName})
+ exports.duplicate_voters = (req,res,next)=>{
+  Voters.aggregate([
+        {$group:{"_id":"$fullName","fullName":{$first:"$fullName"},"count":{$sum:1}}},
+        {$match:{"count":{$gt:1}}},
+        {$project:{"fullName":1,"_id":0}},
+        {$group:{"_id":null,"duplicateNames":{$push:"$fullName"}}},
+        {$project:{"_id":0,"duplicateNames":1}}
+        ])
     .exec()
-    .then(voter => {
-        res.status(200).json(voter);
+    .then(duplicateVoters => {
+        res.status(200).json(duplicateVoters);
     })
     .catch(err =>{
       console.log(err);

@@ -18,5 +18,6 @@ router.get('/distinctBooth', SchemaController.distinct_booth);
 //display voters as per booth
 router.post('/boothVoters', SchemaController.booth_voters);
 
+router.get('/duplicateVoters', SchemaController.duplicate_voters);
 
 module.exports = router;
