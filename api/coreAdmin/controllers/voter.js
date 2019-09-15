@@ -198,9 +198,8 @@ exports.delete_voter = function (req, res,next) {
     .exec()
     .then(voter => {
         var voterNameArray = [];
-        voterNameArray.push({"firstName"  : voter.firstName});      
-        voterNameArray.push({"middleName" : voter.middleName});
-        voterNameArray.push({"lastName"   : voter.lastName});
+        voterNameArray.push({"firstName"  : voter.middleName,"lastName"   : voter.lastName});      
+        voterNameArray.push({"middleName" : voter.firstName,"lastName"   : voter.lastName});
         selector.push({$or : voterNameArray });
         if(voter){
              Voters.find({ $or : selector})
