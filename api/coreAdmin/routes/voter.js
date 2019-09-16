@@ -9,6 +9,8 @@ router.get('/get/one/:voterId', SchemaController.single_voter);
 router.patch('/patch/', SchemaController.update_VoterData);
 router.delete('/delete/one/:voterId', SchemaController.delete_voter);
 
+router.delete('/deleteAllVoters', SchemaController.deleteall_voters);
+
 //Find voter family
 router.get('/voterFamily/:voterId', SchemaController.voter_family);
 

@@ -189,6 +189,22 @@ exports.delete_voter = function (req, res,next) {
         });
     });
 };
+//delete all voter
+exports.deleteall_voters = (req,res,next)=>{
+    Voters.deleteMany({})
+        .exec()
+        .then(data=>{
+            res.status(200).json("All Voters deleted");
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+}
+
+
 
 
 //voter  Family
