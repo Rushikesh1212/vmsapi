@@ -26,4 +26,6 @@ router.post('/boothList', SchemaController.booth_list);
 
 router.post('/updateFeatured', SchemaController.update_featured);
 
+router.get('/surnameList', SchemaController.surname_list);
+
 module.exports = router;

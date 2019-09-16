@@ -395,3 +395,19 @@ exports.update_featured = (req,res,next)=>{
             });
         });
 }
+
+
+//diplay surname list
+exports.surname_list = (req,res,next)=>{
+    Voters.distinct('lastName')
+        .exec()
+        .then(surname=>{
+            res.status(200).json(surname);
+        })
+          .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error2: err
+            });
+        });
+}
