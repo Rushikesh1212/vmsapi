@@ -51,8 +51,8 @@ exports.searchVoters = (req,res,next)=>{
   }
 
    // for favourite ----------------------------------------------------
-  if(req.body.favourite && req.body.favourite !== ""){
-    selector.push({"favourite" : req.body.favourite});
+  if(req.body.featured && req.body.featured !== ""){
+    selector.push({"featured" : req.body.featured});
   }
 
   // for dead ----------------------------------------------------
@@ -77,7 +77,7 @@ exports.searchVoters = (req,res,next)=>{
 
   console.log("selector = ", JSON.stringify(selector));
 
-  Voters.find({ $or : selector})
+  Voters.find({ $and : selector})
       .sort({"voterCreatedAt" : -1})
       .exec()
       .then(searchResults=>{
