@@ -22,4 +22,6 @@ router.get('/duplicateVoters', SchemaController.duplicate_voters);
 
 router.post('/boothList', SchemaController.booth_list);
 
+router.post('/updateFeatured', SchemaController.update_featured);
+
 module.exports = router;

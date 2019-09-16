@@ -45,7 +45,7 @@ const votersSchema = mongoose.Schema({
     aadharCard        : String,
     color             : Number,
     cast              : String,
-    favourite         : Boolean,
+    featured         : Boolean,
     voterUpdateStatus : Array,
     voterCreatedAt    : Date,
 });

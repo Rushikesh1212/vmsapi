@@ -36,7 +36,7 @@ exports.create_Voters = (req,res,next)=>{
                 aadharCard        : "",
                 color             : 0,
                 cast              : "",
-                favourite         : false,
+                featured         : false,
                 mAge              : req.body[i].mAge,
                 mBoothName        : req.body[i].mBoothName,
                 mConstituencyName : req.body[i].mConstituencyName,
@@ -137,7 +137,7 @@ exports.update_VoterData = (req,res,next)=>{
                     aadharCard        : req.body.aadharCard,
                     color             : req.body.color,
                     cast              : req.body.cast,
-                    favourite         : req.body.favourite,
+                    featured         : req.body.featured,
                 },
                 $push:{
                     voterUpdateStatus : {
@@ -240,9 +240,7 @@ exports.delete_voter = function (req, res,next) {
                             }
                           }
               },
-            },
-
-             
+            },       
             ])
             .exec()
             .then(boothName => {
@@ -336,4 +334,48 @@ exports.booth_list = (req,res,next)=>{
         error: err
       });
     });
+}
+
+//update featured
+exports.update_featured = (req,res,next)=>{
+    User.findOne({"_id" : req.body.userId})
+        .exec()
+        .then(user=>{
+            Voters.updateOne(
+            { "_id" : req.body.voterId },                        
+            {
+                $set:{
+                    featured         : req.body.featured,
+                },
+                $push:{
+                    voterUpdateStatus : {
+                        "UserId"          : user._id,
+                        "updatedBy"       : user.profile.fullName,
+                        "updatedAt"       : new Date(),
+                        },
+                    }
+                }
+            )
+            .exec()
+            .then(data=>{
+                if(data.nModified == 1){                
+                    res.status(200).json("Voter Updated");
+                }else{
+                    res.status(401).json("Voter Not Found");
+                }
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error1: err
+                });
+            });
+
+        })
+          .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error2: err
+            });
+        });
 }
