@@ -26,6 +26,10 @@ router.post('/boothList', SchemaController.booth_list);
 
 router.post('/updateFeatured', SchemaController.update_featured);
 
+//surnameList
 router.get('/surnameList', SchemaController.surname_list);
+
+//searh in surname list
+router.post('/searchSurnameList', SchemaController.search_surname_list);
 
 module.exports = router;

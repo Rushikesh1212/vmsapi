@@ -411,3 +411,20 @@ exports.surname_list = (req,res,next)=>{
             });
         });
 }
+
+//search surname list
+exports.search_surname_list = (req,res,next)=>{
+    Voters.find({"lastName" : {"$regex":req.body.lastName,$options: "i"}},{_id:0,lastName:1})
+    .exec()
+    .then(lastName => {
+        var lastName1 = lastName.map(a=>a.lastName);
+        lastName = [...new Set(lastName1)];
+        res.status(200).json(lastName);
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+}
