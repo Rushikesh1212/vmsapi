@@ -6,7 +6,15 @@ const axios         = require('axios');
 
 exports.add_booth = (req,res,next)=>{
     console.log('req=>',req.body);
-            const booth = new Booth({
+    Booth.find({"boothName" :req.body.boothName})
+    .exec()
+    .then(booth => {
+      if(booth && booth.length>0){
+        return res.status(200).json({
+          message:"BOOTH-ALREADY-EXIST"
+        });
+      }else{
+         const booth = new Booth({
                 _id              : new mongoose.Types.ObjectId(),
                 boothName         : req.body.boothName,
                 male              : req.body.male,
@@ -15,18 +23,27 @@ exports.add_booth = (req,res,next)=>{
               });
             console.log("booth",booth)
              booth.save()
-                  .then(data=>{                                            
-                     return res.status(200).json({
-                        "message" : 'booth Added',
-                        "Voter"   :     data,
-                    }); 
-                  })
-                  .catch(err =>{
-                    console.log(err);
-                    res.status(500).json({
-                        error: err
-                    });
-                  });
+              .then(data=>{                                            
+                 return res.status(200).json({
+                    "message" : 'booth Added',
+                    "Voter"   :     data,
+                }); 
+              })
+              .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+              });
+          }    
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+          error: err
+      });
+    });
+           
 };
 
 //search booth in boothlist
