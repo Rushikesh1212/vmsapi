@@ -36,7 +36,7 @@ exports.create_Voters = (req,res,next)=>{
                 dob               : "",
                 emailId           : "",
                 aadharCard        : "",
-                color             : 0,
+                color             : 1,
                 cast              : "",
                 featured         : false,
                 mAge              : req.body[i].mAge,
@@ -488,11 +488,30 @@ exports.color_list = (req,res,next)=>{
             },       
             ])
         .exec()
-        .then(surname=>{
-            var filtered = surname.filter(function (el) {
+        .then(colorList=>{
+            var filtered = colorList.filter(function (el) {
               return el._id != null;
             });
-                res.status(200).json(filtered);
+            var colorList1 = [];
+            for (var i = filtered.length - 1; i >= 0; i--) {
+                for (var j = 5; j > 0; j--) {
+                    if(filtered[i]._id==j){
+                        var color={
+                            color : filtered[i]._id,
+                            count : total[i]
+                        }
+                        colorList1.push(color);
+                    }else{
+                        var color={
+                            color : j,
+                            count : 0,
+                        }
+                        colorList1.push(color);
+                    }
+                }
+                
+            }
+                res.status(200).json(colorList1);
             
         })
           .catch(err =>{
