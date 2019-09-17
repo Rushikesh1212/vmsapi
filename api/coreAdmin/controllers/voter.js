@@ -313,7 +313,7 @@ exports.deleteall_voters = (req,res,next)=>{
 
 
 
-//display voters as per booth
+//display duplicate voters as per booth
  exports.duplicate_voters = (req,res,next)=>{
   Voters.aggregate([
         {$group:{"_id":"$fullName","fullName":{$first:"$fullName"},"count":{$sum:1}}},
@@ -399,10 +399,19 @@ exports.update_featured = (req,res,next)=>{
 
 //diplay surname list
 exports.surname_list = (req,res,next)=>{
-    Voters.distinct('lastName')
+    Voters.aggregate([
+               {$group: { _id: "$lastName",
+                total: {$sum: 1},
+              },
+            },       
+            ])
         .exec()
         .then(surname=>{
-            res.status(200).json(surname);
+            var filtered = surname.filter(function (el) {
+              return el._id != null;
+            });
+                res.status(200).json(filtered);
+            
         })
           .catch(err =>{
             console.log(err);
@@ -412,6 +421,7 @@ exports.surname_list = (req,res,next)=>{
         });
 }
 
+
 //search surname list
 exports.search_surname_list = (req,res,next)=>{
     Voters.find({"lastName" : {"$regex":req.body.lastName,$options: "i"}},{_id:0,lastName:1})
@@ -420,6 +430,10 @@ exports.search_surname_list = (req,res,next)=>{
         var lastName1 = lastName.map(a=>a.lastName);
         lastName = [...new Set(lastName1)];
         res.status(200).json(lastName);
+
+        for (var i = lastName.length - 1; i >= 0; i--) {
+            lastName[i]
+        }
     })
     .catch(err =>{
       console.log(err);
