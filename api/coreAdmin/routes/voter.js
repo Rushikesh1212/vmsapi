@@ -22,8 +22,6 @@ router.post('/boothVoters', SchemaController.booth_voters);
 
 router.get('/duplicateVoters', SchemaController.duplicate_voters);
 
-
-
 router.post('/updateFeatured', SchemaController.update_featured);
 
 //surnameList
@@ -37,5 +35,8 @@ router.get('/areaList', SchemaController.area_list);
 
 //searh in area list
 router.post('/searchAreaList', SchemaController.search_area_list);
+
+//surnameList
+router.get('/colorList', SchemaController.color_list);
 
 module.exports = router;

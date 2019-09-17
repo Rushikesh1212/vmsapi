@@ -477,3 +477,28 @@ exports.search_area_list = (req,res,next)=>{
       });
     });
 }
+
+
+//color list
+exports.color_list = (req,res,next)=>{
+    Voters.aggregate([
+               {$group: { _id: "$color",
+                total: {$sum: 1},
+              },
+            },       
+            ])
+        .exec()
+        .then(surname=>{
+            var filtered = surname.filter(function (el) {
+              return el._id != null;
+            });
+                res.status(200).json(filtered);
+            
+        })
+          .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error2: err
+            });
+        });
+}
