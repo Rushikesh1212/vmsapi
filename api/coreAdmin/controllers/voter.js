@@ -435,7 +435,10 @@ exports.area_list = (req,res,next)=>{
     Voters.distinct('areaName')
         .exec()
         .then(areaName=>{
-            res.status(200).json(areaName);
+            var filtered = areaName.filter(function (el) {
+              return el != null;
+            });
+            res.status(200).json(filtered);
         })
           .catch(err =>{
             console.log(err);
@@ -452,7 +455,10 @@ exports.search_area_list = (req,res,next)=>{
     .then(areaName => {
         var areaName1 = areaName.map(a=>a.areaName);
         areaName = [...new Set(areaName1)];
-        res.status(200).json(areaName);
+        var filtered = areaName.filter(function (el) {
+          return el != null;
+        });
+        res.status(200).json(filtered);
     })
     .catch(err =>{
       console.log(err);
