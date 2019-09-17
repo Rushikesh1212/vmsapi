@@ -4,6 +4,7 @@
 	const bodyParser 					= require('body-parser');// this package use to formate json data 
 	const mongoose 						= require ('mongoose');
 	var nodeMailer   					= require('nodemailer');
+	const axios 		= require('axios');
 
 	const dbname = "vms";
 	global.JWT_KEY = "secret";
@@ -11,6 +12,11 @@
 	mongoose.connect('mongodb://localhost/'+dbname,{
 		useNewUrlParser: true
 	})
+
+	axios.defaults.baseURL = 'http://localhost:5014/';
+	// axios.defaults.baseURL = 'http://vmsapi.ranjitsinhshinde.in/';
+	axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 	mongoose.promise = global.Promise;
 
 	app.use(morgan("dev"));
@@ -36,11 +42,12 @@
 	const VotersUrl 						= require("./api/coreAdmin/routes/voter");
 	const SearchUrl 						= require("./api/coreAdmin/routes/searchVoter");
 	const ReportUrl 						= require("./api/coreAdmin/routes/report");
+	const BoothUrl 						    = require("./api/coreAdmin/routes/booth");
 
 	app.use("/api/users",usersUrl);
 	app.use("/api/voters",VotersUrl);
 	app.use("/api/search",SearchUrl);
-	app.use("/api/report",ReportUrl);
+	app.use("/api/booth",BoothUrl);
 
 	
 

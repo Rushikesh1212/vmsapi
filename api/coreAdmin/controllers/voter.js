@@ -1,6 +1,8 @@
 const mongoose	= require("mongoose");
 const Voters        = require('../models/voter');
 const User          = require('../models/users');
+const booth         = require('../models/booth');
+const axios         = require('axios');
 
 exports.create_Voters = (req,res,next)=>{
     console.log('req=>',req.body.length);
@@ -282,6 +284,18 @@ exports.deleteall_voters = (req,res,next)=>{
                         }
                         if(i<boothName.length){
                             boothList.push(booth)
+                            axios.post("/api/booth/post",booth)
+                                  .then(response => {
+                                    return res.status(200).json({
+                                        "message" : 'Booth Added',
+                                    });         
+                                })
+                                .catch(msgError=>{
+                                    return res.status(501).json({
+                                        message: "Some Error occurred during sending message",
+                                        error: msgError
+                                    });        
+                                }); 
                         }
                     }
 
@@ -333,24 +347,6 @@ exports.deleteall_voters = (req,res,next)=>{
       });
     });
 };
-
-
-//boothList
-exports.booth_list = (req,res,next)=>{
-  Voters.find({"boothName" : {"$regex":req.body.boothName,$options: "i"}},{_id:0,boothName:1})
-    .exec()
-    .then(boothList => {
-        var boothName = boothList.map(a=>a.boothName);
-        boothList = [...new Set(boothName)];
-        res.status(200).json(boothList);
-    })
-    .catch(err =>{
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    });
-}
 
 //update featured
 exports.update_featured = (req,res,next)=>{
