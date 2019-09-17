@@ -436,7 +436,7 @@ exports.area_list = (req,res,next)=>{
         .exec()
         .then(areaName=>{
             var filtered = areaName.filter(function (el) {
-              return el != null;
+              return el != "";
             });
             res.status(200).json(filtered);
         })
@@ -456,7 +456,7 @@ exports.search_area_list = (req,res,next)=>{
         var areaName1 = areaName.map(a=>a.areaName);
         areaName = [...new Set(areaName1)];
         var filtered = areaName.filter(function (el) {
-          return el != null;
+          return el != "";
         });
         res.status(200).json(filtered);
     })
