@@ -32,4 +32,10 @@ router.get('/surnameList', SchemaController.surname_list);
 //searh in surname list
 router.post('/searchSurnameList', SchemaController.search_surname_list);
 
+//areaList
+router.get('/areaList', SchemaController.area_list);
+
+//searh in area list
+router.post('/searchAreaList', SchemaController.search_area_list);
+
 module.exports = router;

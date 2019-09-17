@@ -428,3 +428,36 @@ exports.search_surname_list = (req,res,next)=>{
       });
     });
 }
+
+
+//diplay area list
+exports.area_list = (req,res,next)=>{
+    Voters.distinct('areaName')
+        .exec()
+        .then(areaName=>{
+            res.status(200).json(areaName);
+        })
+          .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error2: err
+            });
+        });
+}
+
+//search area list
+exports.search_area_list = (req,res,next)=>{
+    Voters.find({"areaName" : {"$regex":req.body.areaName,$options: "i"}},{_id:0,areaName:1})
+    .exec()
+    .then(areaName => {
+        var areaName1 = areaName.map(a=>a.areaName);
+        areaName = [...new Set(areaName1)];
+        res.status(200).json(areaName);
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+}
