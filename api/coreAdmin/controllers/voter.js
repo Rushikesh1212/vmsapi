@@ -498,7 +498,7 @@ exports.color_list = (req,res,next)=>{
                     if(filtered[i]._id==j){
                         var color={
                             color : filtered[i]._id,
-                            count : total[i]
+                            count : filtered[i].total
                         }
                         colorList1.push(color);
                     }else{
