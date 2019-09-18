@@ -1,6 +1,6 @@
 const mongoose	= require("mongoose");
 const Voters   = require('../models/voter');
-const User          = require('../models/users');
+const Users          = require('../models/users');
 
 
 // Activity Log
@@ -32,3 +32,59 @@ exports.user_activity = (req,res,next)=>{
     
 }
 
+// dasboard tab
+exports.dasboard_tab = (req,res,next)=>{
+    Voters.find({}).count()
+        .exec()
+        .then(voters=>{
+          Voters.find({"visited":true}).count()
+              .exec()
+              .then(updated=>{
+                 Users.find({}).count()
+                  .exec()
+                  .then(users=>{
+                      Users.find({"profile.status":"Active"}).count()
+                        .exec()
+                        .then(active=>{
+                          return res.status(200).json({
+                            totalVoters:voters,
+                            updatedVoters:updated,
+                            totalUsers:users,
+                            activeUesr:active
+                          }); 
+                          
+                        })
+                      .catch(err =>{
+                          console.log(err);
+                          res.status(500).json({
+                              message : "No Data Found",
+                              error   : err
+                          });
+                      });  
+                  })
+                .catch(err =>{
+                    console.log(err);
+                    res.status(500).json({
+                        message : "No Data Found",
+                        error   : err
+                    });
+                });
+                
+              })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    message : "No Data Found",
+                    error   : err
+                });
+            });
+        })
+      .catch(err =>{
+          console.log(err);
+          res.status(500).json({
+              message : "No Data Found",
+              error   : err
+          });
+      });
+    
+}

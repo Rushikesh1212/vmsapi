@@ -41,8 +41,8 @@ const userSchema = mongoose.Schema({
 		city 			: String,
 	},
 	roles 				: [String],
-	officeLocation 		: String,
-	heartbeat : Date
+	boothName 		    : String,
+	// heartbeat : Date
 });
 
 module.exports = mongoose.model('users',userSchema);
