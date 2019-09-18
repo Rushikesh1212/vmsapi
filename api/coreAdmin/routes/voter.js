@@ -25,18 +25,9 @@ router.get('/duplicateVoters', SchemaController.duplicate_voters);
 router.post('/updateFeatured', SchemaController.update_featured);
 
 //surnameList
-router.get('/surnameList', SchemaController.surname_list);
-
-//searh in surname list
-router.post('/searchSurnameList', SchemaController.search_surname_list);
-
-//areaList
-router.get('/areaList', SchemaController.area_list);
-
-//searh in area list
-router.post('/searchAreaList', SchemaController.search_area_list);
+router.post('/surnameList', SchemaController.surname_list);
 
 //surnameList
-router.get('/colorList', SchemaController.color_list);
+router.post('/colorList', SchemaController.color_list);
 
 module.exports = router;

@@ -392,15 +392,16 @@ exports.update_featured = (req,res,next)=>{
         });
 }
 
-
 //diplay surname list
 exports.surname_list = (req,res,next)=>{
     Voters.aggregate([
-               {$group: { _id: "$lastName",
-                total: {$sum: 1},
-              },
-            },       
-            ])
+            {
+              $match : {"boothName": req.body.boothName}
+            },
+            {
+              $group : { _id:"$lastName", count:{$sum:1} }
+            }
+        ])
         .exec()
         .then(surname=>{
             var filtered = surname.filter(function (el) {
@@ -417,76 +418,16 @@ exports.surname_list = (req,res,next)=>{
         });
 }
 
-
-//search surname list
-exports.search_surname_list = (req,res,next)=>{
-    Voters.find({"lastName" : {"$regex":req.body.lastName,$options: "i"}},{_id:0,lastName:1})
-    .exec()
-    .then(lastName => {
-        var lastName1 = lastName.map(a=>a.lastName);
-        lastName = [...new Set(lastName1)];
-        res.status(200).json(lastName);
-
-        for (var i = lastName.length - 1; i >= 0; i--) {
-            lastName[i]
-        }
-    })
-    .catch(err =>{
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    });
-}
-
-
-//diplay area list
-exports.area_list = (req,res,next)=>{
-    Voters.distinct('areaName')
-        .exec()
-        .then(areaName=>{
-            var filtered = areaName.filter(function (el) {
-              return el != "";
-            });
-            res.status(200).json(filtered);
-        })
-          .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error2: err
-            });
-        });
-}
-
-//search area list
-exports.search_area_list = (req,res,next)=>{
-    Voters.find({"areaName" : {"$regex":req.body.areaName,$options: "i"}},{_id:0,areaName:1})
-    .exec()
-    .then(areaName => {
-        var areaName1 = areaName.map(a=>a.areaName);
-        areaName = [...new Set(areaName1)];
-        var filtered = areaName.filter(function (el) {
-          return el != "";
-        });
-        res.status(200).json(filtered);
-    })
-    .catch(err =>{
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    });
-}
-
-
 //color list
 exports.color_list = (req,res,next)=>{
     Voters.aggregate([
-               {$group: { _id: "$color",
-                total: {$sum: 1},
-              },
-            },       
-            ])
+            {
+              $match : {"boothName": req.body.boothName}
+            },
+            {
+              $group : { _id:"$color", count:{$sum:1} }
+            }
+        ])
         .exec()
         .then(colorList=>{
             var filtered = colorList.filter(function (el) {
@@ -498,7 +439,7 @@ exports.color_list = (req,res,next)=>{
                     if(filtered[i]._id==j){
                         var color={
                             color : filtered[i]._id,
-                            count : filtered[i].total
+                            count : filtered[i].count
                         }
                         colorList1.push(color);
                     }else{
@@ -521,3 +462,5 @@ exports.color_list = (req,res,next)=>{
             });
         });
 }
+
+

@@ -75,6 +75,11 @@ exports.searchVoters = (req,res,next)=>{
     selector.push({"mobileNumber" : req.body.mobileNumber});
   }
 
+   // for mobileNumber ----------------------------------------------------
+  if(req.body.color && req.body.color !== ""){
+    selector.push({"color" : req.body.color});
+  }
+
   console.log("selector = ", JSON.stringify(selector));
 
   Voters.find({ $and : selector})
