@@ -11,7 +11,9 @@ router.get('/get/dasboardTab', reportController.dasboard_tab);
 
 router.get('/get/colorList', reportController.color_list1);
 
-router.get('/votersUpdatedByUser', reportController.voters_updated_by_user);
+router.get('/votersUpdatedCount', reportController.voters_updated_count);
+
+router.post('/votersUpdatedByUser', reportController.voters_updated_by_user);
 
 
 module.exports = router;
