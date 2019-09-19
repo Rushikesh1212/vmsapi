@@ -88,3 +88,48 @@ exports.dasboard_tab = (req,res,next)=>{
       });
     
 }
+
+//color list
+exports.color_list1 = (req,res,next)=>{
+    Voters.aggregate([
+            {
+              $group : { _id:"$color", count:{$sum:1} }
+            }
+        ])
+        .exec()
+        .then(colorList=>{
+            var filtered = colorList.filter(function (el) {
+              return el._id != null;
+            });
+            var colorList1 = [];
+            var color="";
+            for (var i = filtered.length - 1; i >= 0; i--) {
+                for (var j = 5; j > 0; j--) {
+                    if(filtered[i]._id===j){
+                        color={
+                            color : filtered[i]._id,
+                            count : filtered[i].count
+                        }
+                    colorList1.push(color);
+
+                    }else if(i==filtered.length-1){
+                         color={
+                            color : j,
+                            count : 0,
+                        }
+                    colorList1.push(color);
+
+                    }
+                }
+                
+            }
+                res.status(200).json(colorList1);
+            
+        })
+          .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error2: err
+            });
+        });
+}

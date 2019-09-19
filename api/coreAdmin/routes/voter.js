@@ -28,6 +28,6 @@ router.post('/updateFeatured', SchemaController.update_featured);
 router.post('/surnameList', SchemaController.surname_list);
 
 //surnameList
-router.post('/colorList', SchemaController.color_list);
+router.post('/colorList/', SchemaController.color_list);
 
 module.exports = router;

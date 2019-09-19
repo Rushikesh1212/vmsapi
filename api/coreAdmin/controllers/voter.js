@@ -433,6 +433,7 @@ exports.color_list = (req,res,next)=>{
             var filtered = colorList.filter(function (el) {
               return el._id != null;
             });
+            console.log("filtered",filtered);
             var colorList1 = [];
             for (var i = filtered.length - 1; i >= 0; i--) {
                 for (var j = 5; j > 0; j--) {
@@ -450,6 +451,7 @@ exports.color_list = (req,res,next)=>{
                         colorList1.push(color);
                     }
                 }
+                break;
                 
             }
                 res.status(200).json(colorList1);
