@@ -183,7 +183,7 @@ exports.voters_updated_count = (req,res,next)=>{
 //voters_updated_by_user
 exports.voters_updated_by_user = (req,res,next)=>{
   console.log("req.body.userId",req.body.userId)
-    Voters.find({"voterUpdateStatus":{$elemMatch:{"UserId":req.body.userId}}})
+    Voters.find({"voterUpdateStatus":{$elemMatch:{"UserId":mongoose.Types.ObjectId(req.body.userId)}}})
       .exec()
       .then(voters=>{
            res.status(200).json(voters);
