@@ -466,3 +466,42 @@ exports.color_list = (req,res,next)=>{
 }
 
 
+//pincode list
+ exports.pincode_list = (req,res,next)=>{
+  Voters.distinct('pinCode')
+    .exec()
+    .then(pinCode => {
+        res.status(200).json(pinCode);
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+//boothname pincode wise
+ exports.booth_by_pincode = (req,res,next)=>{
+    console.log("req.body",req.body);
+  Voters.aggregate([
+            {
+              $match : {"pinCode": req.body.pinCode}
+            },
+            {
+              $group : { _id:"$boothName"}
+            }
+        ])
+    .exec()
+    .then(boothList => {
+        res.status(200).json(boothList);
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+

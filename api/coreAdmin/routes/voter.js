@@ -28,6 +28,12 @@ router.post('/updateFeatured', SchemaController.update_featured);
 router.post('/surnameList', SchemaController.surname_list);
 
 //surnameList
-router.post('/colorList/', SchemaController.color_list);
+router.post('/colorList', SchemaController.color_list);
+
+//pincodeList
+router.get('/pincodeList', SchemaController.pincode_list);
+
+//pincodeList
+router.post('/boothByPincode', SchemaController.booth_by_pincode);
 
 module.exports = router;
