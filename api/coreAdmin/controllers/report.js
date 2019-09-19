@@ -133,3 +133,49 @@ exports.color_list1 = (req,res,next)=>{
             });
         });
 }
+
+
+//color list
+exports.voters_updated_by_user = (req,res,next)=>{
+    Users.find({})
+        .exec()
+        .then(users=>{
+          Voters.find({})
+            .exec()
+            .then(voters=>{
+              var userList = [];
+                  for (var i = users.length - 1; i >= 0; i--) {
+                    var voterCount = 0;
+                   for (var j = voters.length - 1; j >= 0; j--) {
+                      for (var k = voters[j].voterUpdateStatus.length - 1; k >= 0; k--) {
+                        if(users[i]._id.toString() === voters[j].voterUpdateStatus[k].UserId.toString())
+                          {
+                              voterCount = voterCount + 1;
+                          }
+                      }
+                    }
+                    var user = {
+                      "userId"          : users[i]._id,
+                      "userName"        : users[i].profile.fullName,
+                      "mobileNo"        : users[i].mobileNumber,
+                      "visitedCount"    : voterCount,
+                    }
+                    userList.push(user);
+                  }
+                res.status(200).json(userList);
+
+            })
+              .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error2: err
+                });
+            });
+        })
+          .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error2: err
+            });
+        });
+}

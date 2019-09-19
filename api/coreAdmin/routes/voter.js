@@ -36,4 +36,5 @@ router.get('/pincodeList', SchemaController.pincode_list);
 //pincodeList
 router.post('/boothByPincode', SchemaController.booth_by_pincode);
 
+
 module.exports = router;
