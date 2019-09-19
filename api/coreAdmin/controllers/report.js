@@ -183,10 +183,46 @@ exports.voters_updated_count = (req,res,next)=>{
 //voters_updated_by_user
 exports.voters_updated_by_user = (req,res,next)=>{
   console.log("req.body.userId",req.body.userId)
-    Voters.find({"voterUpdateStatus":{$elemMatch:{"UserId":mongoose.Types.ObjectId(req.body.userId)}}})
+  Users.find({"_id":mongoose.Types.ObjectId(req.body.userId)},{"profile.fullName":1,mobileNumber:1})
       .exec()
-      .then(voters=>{
-           res.status(200).json(voters);
+      .then(users=>{
+        console.log(Users)
+        Voters.find({"voterUpdateStatus":{$elemMatch:{"UserId":mongoose.Types.ObjectId(req.body.userId)}}},{fullName:1,mobileNumber:1,"voterUpdateStatus.UserId":1,"voterUpdateStatus.updatedAt":1,idNumber:1})
+          .exec()
+          .then(voters=>{
+
+              var List = [];
+              var voterList = [];
+               for (var j = voters.length - 1; j >= 0; j--) {
+                  for (var k = voters[j].voterUpdateStatus.length - 1; k >= 0; k--) {
+                    if(users[0]._id.toString() === voters[j].voterUpdateStatus[k].UserId.toString())
+                      {
+                          var voter ={
+                            "_id"          : voters[j]._id,
+                            "voterId"      : voters[j].idNumber,  
+                            "fullName"     : voters[j].fullName,
+                            "mobileNumber" : voters[j].mobileNumber,
+                            "updatedAt"    : voters[j].voterUpdateStatus[k].updatedAt,
+                          }
+                          voterList.push(voter)
+                      }
+                  }
+                }
+                var data = {
+                  "userId"          : users[0]._id,
+                  "userName"        : users[0].profile.fullName,
+                  "mobileNo"        : users[0].mobileNumber,
+                  "voters"          : voterList,
+                }
+                List.push(data);
+            res.status(200).json(List);
+          })
+            .catch(err =>{
+              console.log(err);
+              res.status(500).json({
+                  error2: err
+              });
+          });
 
       })
         .catch(err =>{
@@ -195,4 +231,5 @@ exports.voters_updated_by_user = (req,res,next)=>{
               error2: err
           });
       });
+   
 }
