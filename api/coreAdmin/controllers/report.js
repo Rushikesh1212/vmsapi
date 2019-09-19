@@ -204,7 +204,10 @@ exports.voters_updated_by_user = (req,res,next)=>{
                             "mobileNumber" : voters[j].mobileNumber,
                             "updatedAt"    : voters[j].voterUpdateStatus[k].updatedAt,
                           }
-                          voterList.push(voter)
+                          if( k<voters[j].voterUpdateStatus.length){
+                              voterList.push(voter)
+                              break;
+                          }
                       }
                   }
                 }
