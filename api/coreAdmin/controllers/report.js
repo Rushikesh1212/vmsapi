@@ -151,6 +151,7 @@ exports.voters_updated_count = (req,res,next)=>{
                         if(users[i]._id.toString() === voters[j].voterUpdateStatus[k].UserId.toString())
                           {
                               voterCount = voterCount + 1;
+                              break;
                           }
                       }
                     }
