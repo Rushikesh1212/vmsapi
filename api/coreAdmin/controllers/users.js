@@ -112,8 +112,8 @@ exports.add_user = (req,res,next)=>{
 
 //VMS Login
  exports.user_login = (req,res,next)=>{
- 	console.log("req.body.userName",req.body.userName)
-	User.findOne({"emails.userName":req.body.userName,roles:"User"})
+ 	// console.log("req.body.userName",req.body.userName)
+	User.findOne({"emails.userName":req.body.userName,roles:"User","profile.status":"Active"})
 		.exec()
 		.then(user => {
 			console.log("user",user)
