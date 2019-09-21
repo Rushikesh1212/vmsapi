@@ -39,5 +39,8 @@ router.get('/villagelist', SchemaController.village_list);
 //pincodeList
 router.post('/boothbyvillage', SchemaController.booth_by_village);
 
+//send msg
+router.post('/sendmsg', SchemaController.send_msg);
+
 
 module.exports = router;

@@ -506,3 +506,34 @@ exports.color_list = (req,res,next)=>{
 };
 
 
+//send messgae
+exports.send_msg = (req,res,next)=>{
+    Voters.findOne({"_id":req.body.voterId})
+        .exec()
+        .then(voter=>{
+            console.log("voter",voter);
+            console.log("inside=>>>>")
+            var text = "Dear "+voter.fullName+',\n'+"your data updated";    
+            const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+voter.mobileNumber+"&message="+text+"&senderid=TESTBK&accusage=1"
+            axios.get(url)
+              .then(response => {
+                return res.status(200).json({
+                    "message" : 'MESSAGE_SEND',
+                });         
+            })
+            .catch(msgError=>{
+                return res.status(501).json({
+                    message: "Some Error occurred during sending message",
+                    error: msgError
+                });        
+            });
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });     
+}           
+   
+
