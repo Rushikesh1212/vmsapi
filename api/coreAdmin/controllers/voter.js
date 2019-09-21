@@ -76,6 +76,76 @@ exports.create_Voters = (req,res,next)=>{
         }      
 };
 
+
+exports.create_Voters = (req,res,next)=>{
+    console.log('req=>',req.body);
+    const voters = new Voters({
+         _id              : new mongoose.Types.ObjectId(),
+        age               : req.body[i].age,
+        boothName         : req.body[i].boothName,
+        constituencyName  : req.body[i].constituencyName,
+        firstName         : req.body[i].firstName,
+        middleName        : req.body[i].middleName,
+        lastName          : req.body[i].lastName,
+        fullName          : req.body[i].firstName+" "+req.body[i].middleName+" "+req.body[i].lastName,
+        gender            : req.body[i].gender,
+        houseNumber       : req.body[i].houseNumber,
+        idNumber          : req.body[i].idNumber,
+        partNo            : req.body[i].partNo,
+        partName          : req.body[i].partName,
+        pinCode           : req.body[i].pinCode,
+        relation          : req.body[i].relation,
+        relativeName      : req.body[i].relativeName,
+        villageName       : req.body[i].villageName,
+        mobileNumber      : "",
+        whatsAppNumber    : "",
+        dead              : false,
+        visited           : false,
+        voted             : false,
+        changeAddress     : "",
+        areaName          : "",
+        otherInfo         : "",
+        dob               : "",
+        emailId           : "",
+        aadharCard        : "",
+        color             : 1,
+        cast              : "",
+        featured         : false,
+        mAge              : req.body[i].mAge,
+        mBoothName        : req.body[i].mBoothName,
+        mConstituencyName : req.body[i].mConstituencyName,
+        mFirstName        : req.body[i].mFirstName,
+        mMiddleName       : req.body[i].mMiddleName,
+        mLastName         : req.body[i].mLastName,
+        mFullName         : req.body[i].mFirstName+" "+req.body[i].mMiddleName+" "+req.body[i].mLastName,
+        mGender           : req.body[i].mGender,
+        mHouseNumber      : req.body[i].mHouseNumber,
+        mIdNumber         : req.body[i].mIdNumber,
+        mPartNo           : req.body[i].mPartNo,
+        mPartName         : req.body[i].mPartName,
+        mPinCode          : req.body[i].mPinCode,
+        mRelation         : req.body[i].mRelation,
+        mRelativeName     : req.body[i].mRelativeName,
+        mVillageName     : req.body[i].mVillageName,
+        voterUpdateStatus: [],
+        voterCreatedAt    : new Date(),
+    });
+    // console.log("vsssoters",voters)
+     voters.save()
+          .then(data=>{                                            
+             return res.status(200).json({
+                "message" : 'Voter Added',
+                "Voter"   :     data,
+            }); 
+          })
+          .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+          });
+};
+
 // Voters List
 exports.voters_list = (req,res,next)=>{
     Voters.find({})
@@ -143,7 +213,7 @@ exports.update_VoterData = (req,res,next)=>{
                     aadharCard        : req.body.aadharCard,
                     color             : req.body.color,
                     cast              : req.body.cast,
-                    featured         : req.body.featured,
+                    featured          : req.body.featured,
                 },
                 $push:{
                     voterUpdateStatus : {
@@ -513,8 +583,10 @@ exports.send_msg = (req,res,next)=>{
         .then(voter=>{
             console.log("voter",voter);
             console.log("inside=>>>>")
-            var text = "Dear "+voter.fullName+',\n'+"your data updated";    
-            const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+voter.mobileNumber+"&message="+text+"&senderid=TESTBK&accusage=1"
+            // var text = "Dear "+voter.fullName+',\n'+"your data updated";    
+            var text="मतदाराचे नाव";
+           const url = "http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+voter.mobileNumber+"&message="+text+"&senderid=RANJIT&accusage=1&unicode=1"
+            console.log("url",url)
             axios.get(url)
               .then(response => {
                 return res.status(200).json({

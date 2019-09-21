@@ -75,7 +75,7 @@ exports.add_user = (req,res,next)=>{
 							.then(newUser =>{
 								if(newUser){
 								var text = "Dear "+req.body.firstName+',\n'+"Your credential for app as follows: \n"+"Username : "+userName+"\nPassword : "+pwd+"\nThank You!"; 	
-								const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+req.body.mobileNumber+"&message="+text+"&senderid=TESTBK&accusage=1"
+								const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+req.body.mobileNumber+"&message="+text+"&senderid=APPREG&accusage=1"
 								axios.get(url)
 							      .then(response => {
 		                            return res.status(200).json({
@@ -360,7 +360,7 @@ exports.reset_password = (req,res,next)=>{
 						if(user && user.length>0){
 								console.log("inside=>>>>")
 								var text = "Dear "+user[0].profile.firstName+',\n'+"Your New credential for app as follows: \n"+"Username : "+user[0].emails[0].userName+"\nPassword : "+pwd+"\nThank You!"; 	
-								const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+user[0].profile.mobileNumber+"&message="+text+"&senderid=TESTBK&accusage=1"
+								const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+user[0].profile.mobileNumber+"&message="+text+"&senderid=APPREG&accusage=1"
 								axios.get(url)
 							      .then(response => {
 			                        return res.status(200).json({
