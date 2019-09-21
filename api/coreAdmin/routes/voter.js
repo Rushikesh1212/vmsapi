@@ -4,6 +4,9 @@ const router 	= express.Router();
 const SchemaController = require('../controllers/voter');
 
 router.post('/post/', SchemaController.create_Voters);
+
+router.post('/post/addvoter', SchemaController.create_single_voter);
+
 router.get('/get/', SchemaController.voters_list);
 router.get('/get/one/:voterId', SchemaController.single_voter);
 router.patch('/patch/', SchemaController.update_VoterData);
