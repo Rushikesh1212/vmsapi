@@ -487,7 +487,7 @@ exports.color_list = (req,res,next)=>{
  exports.booth_by_village = (req,res,next)=>{
   Voters.aggregate([
             {
-              $match : {"pinCode": req.body.villageName}
+              $match : {"villageName": req.body.villageName}
             },
             {
               $group : { _id:"$boothName"}
