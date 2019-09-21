@@ -39,7 +39,7 @@ exports.create_Voters = (req,res,next)=>{
                 aadharCard        : "",
                 color             : 1,
                 cast              : "",
-                featured         : false,
+                featured          : false,
                 mAge              : req.body[i].mAge,
                 mBoothName        : req.body[i].mBoothName,
                 mConstituencyName : req.body[i].mConstituencyName,
@@ -55,8 +55,8 @@ exports.create_Voters = (req,res,next)=>{
                 mPinCode          : req.body[i].mPinCode,
                 mRelation         : req.body[i].mRelation,
                 mRelativeName     : req.body[i].mRelativeName,
-                mVillageName     : req.body[i].mVillageName,
-                voterUpdateStatus: [],
+                mVillageName      : req.body[i].mVillageName,
+                voterUpdateStatus : [],
                 voterCreatedAt    : new Date(),
             });
             // console.log("vsssoters",voters)
