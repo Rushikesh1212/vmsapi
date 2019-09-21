@@ -5,9 +5,9 @@ const booth         = require('../models/booth');
 const axios         = require('axios');
 
 exports.create_Voters = (req,res,next)=>{
-    console.log('req=>',req.body.length);
+    // console.log('req=>',req.body.length);
         for (var i = 0; i <= req.body.length-1; i++) {
-            console.log("Inside",req.body[i].age);
+            // console.log("Inside",req.body[i].age);
             const voters = new Voters({
                  _id              : new mongoose.Types.ObjectId(),
                 age               : req.body[i].age,
@@ -25,6 +25,7 @@ exports.create_Voters = (req,res,next)=>{
                 pinCode           : req.body[i].pinCode,
                 relation          : req.body[i].relation,
                 relativeName      : req.body[i].relativeName,
+                villageName       : req.body[i].villageName,
                 mobileNumber      : "",
                 whatsAppNumber    : "",
                 dead              : false,
@@ -54,10 +55,11 @@ exports.create_Voters = (req,res,next)=>{
                 mPinCode          : req.body[i].mPinCode,
                 mRelation         : req.body[i].mRelation,
                 mRelativeName     : req.body[i].mRelativeName,
+                mVillageName     : req.body[i].mVillageName,
                 voterUpdateStatus: [],
                 voterCreatedAt    : new Date(),
             });
-            console.log("voters",voters)
+            // console.log("vsssoters",voters)
              voters.save()
                   .then(data=>{                                            
                      return res.status(200).json({
@@ -77,6 +79,8 @@ exports.create_Voters = (req,res,next)=>{
 // Voters List
 exports.voters_list = (req,res,next)=>{
     Voters.find({})
+        .skip(0)
+        .limit(50)
         // .sort({createdAt:-1})
         .exec()
         .then(voters =>{
@@ -213,6 +217,8 @@ exports.deleteall_voters = (req,res,next)=>{
  exports.voter_family = (req,res,next)=>{
  var selector=[]
   Voters.findOne({"_id":req.params.voterId})
+    .skip(0)
+    .limit(50)
     .exec()
     .then(voter => {
         if(voter){
@@ -481,12 +487,28 @@ exports.color_list = (req,res,next)=>{
     });
 };
 
-//boothname pincode wise
- exports.booth_by_pincode = (req,res,next)=>{
-    console.log("req.body",req.body);
+
+//village list
+ exports.village_list = (req,res,next)=>{
+  Voters.distinct('villageName')
+    .exec()
+    .then(villageName => {
+        res.status(200).json(villageName);
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+
+//boothname village wise
+ exports.booth_by_village = (req,res,next)=>{
   Voters.aggregate([
             {
-              $match : {"pinCode": req.body.pinCode}
+              $match : {"pinCode": req.body.villageName}
             },
             {
               $group : { _id:"$boothName"}

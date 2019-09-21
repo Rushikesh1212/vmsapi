@@ -33,8 +33,11 @@ router.post('/colorList', SchemaController.color_list);
 //pincodeList
 router.get('/pincodeList', SchemaController.pincode_list);
 
+//VillageList
+router.get('/villagelist', SchemaController.village_list);
+
 //pincodeList
-router.post('/boothByPincode', SchemaController.booth_by_pincode);
+router.post('/boothbyvillage', SchemaController.booth_by_village);
 
 
 module.exports = router;
