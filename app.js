@@ -15,8 +15,8 @@
 
 
 // Express 4.0
-	app.use(bodyParser.json({ limit: '50mb' }));
-	app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+	app.use(bodyParser.json({limit:'50mb'}));
+	app.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
 
 	axios.defaults.baseURL = 'http://localhost:5014/';
 	// axios.defaults.baseURL = 'http://vmsapi.ranjitsinhshinde.in/';

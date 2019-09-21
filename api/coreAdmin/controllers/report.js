@@ -110,16 +110,13 @@ exports.color_list1 = (req,res,next)=>{
                             color : filtered[i]._id,
                             count : filtered[i].count
                         }
-                    colorList1.push(color);
-
-                    }else if(i==filtered.length-1){
+                    }else{
                          color={
                             color : j,
                             count : 0,
                         }
-                    colorList1.push(color);
-
-                    }
+                   }
+                   colorList1.push(color);
                 }
                 
             }
