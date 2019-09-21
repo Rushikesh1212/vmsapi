@@ -439,28 +439,7 @@ exports.color_list = (req,res,next)=>{
             var filtered = colorList.filter(function (el) {
               return el._id != null;
             });
-            console.log("filtered",filtered);
-            var colorList1 = [];
-            for (var i = filtered.length - 1; i >= 0; i--) {
-                for (var j = 5; j > 0; j--) {
-                    if(filtered[i]._id==j){
-                        var color={
-                            color : filtered[i]._id,
-                            count : filtered[i].count
-                        }
-                        colorList1.push(color);
-                    }else{
-                        var color={
-                            color : j,
-                            count : 0,
-                        }
-                        colorList1.push(color);
-                    }
-                }
-                break;
-                
-            }
-                res.status(200).json(colorList1);
+            res.status(200).json(filtered);
             
         })
           .catch(err =>{
