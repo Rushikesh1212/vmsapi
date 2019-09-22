@@ -48,12 +48,13 @@
 	const SearchUrl 						= require("./api/coreAdmin/routes/searchVoter");
 	const ReportUrl 						= require("./api/coreAdmin/routes/report");
 	const BoothUrl 						    = require("./api/coreAdmin/routes/booth");
+	const LastDayVotingUrl 				    = require("./api/coreAdmin/routes/lastdayvoting");
 
 	app.use("/api/users",usersUrl);
 	app.use("/api/voters",VotersUrl);
 	app.use("/api/search",SearchUrl);
 	app.use("/api/booth",BoothUrl);
-	app.use("/api/reports",ReportUrl);
+	app.use("/api/lastdayvoting",LastDayVotingUrl);
 
 	
 
