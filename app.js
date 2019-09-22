@@ -54,6 +54,7 @@
 	app.use("/api/voters",VotersUrl);
 	app.use("/api/search",SearchUrl);
 	app.use("/api/booth",BoothUrl);
+	app.use("/api/reports",ReportUrl);
 	app.use("/api/lastdayvoting",LastDayVotingUrl);
 
 	
