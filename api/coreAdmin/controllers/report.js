@@ -96,6 +96,7 @@ exports.color_list1 = (req,res,next)=>{
               $group : { _id:"$color", count:{$sum:1} }
             }
         ])
+        .sort({"color":1})
         .exec()
         .then(colorList=>{
             var filtered = colorList.filter(function (el) {
