@@ -339,11 +339,12 @@ exports.deleteall_voters = (req,res,next)=>{
             .exec()
             .then(boothName => {
                 var boothList=[] 
-                var male = 0;
-                var female = 0;
-                var total =0;
+                
                 for (var i = boothName.length - 1; i > 0; i--) {
                     for (var j = boothName[i].Gender.length - 1; j >= 0; j--) {
+                        var male = 0;
+                        var female = 0;
+                        var total =0;
                         if(boothName[i].Gender[j].male===1){
                                 male=male+1;
                         }else{
