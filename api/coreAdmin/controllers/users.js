@@ -152,6 +152,7 @@ exports.add_user = (req,res,next)=>{
 							message: 'Auth successful',
 							token: token,
 							user_ID:user._id,
+							userName:user.profile.firstName+' '+user.profile.lastName
 						});	
 					}
 						console.log("Inside 1")
