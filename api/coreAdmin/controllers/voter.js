@@ -607,6 +607,50 @@ exports.send_msg = (req,res,next)=>{
                     error: err
                 });
             });     
-}           
+}  
+
+exports.update_voting = (req,res,next)=>{
+    User.findOne({"_id" : req.body.userId})
+        .exec()
+        .then(user=>{
+            console.log("user",user);
+            Voters.updateOne(
+            { "_id" : req.body.voter_id },                        
+            {
+                $set:{
+                    voted             : req.body.voted,
+                },
+                $push:{
+                    voterUpdateStatus : {
+                        "UserId"          : user._id,
+                        "updatedBy"       : user.profile.fullName,
+                        "updatedAt"       : new Date(),
+                        },
+                    }
+                }
+            )
+            .exec()
+            .then(data=>{
+                if(data.nModified == 1){                
+                    res.status(200).json("Voter voted");
+                }else{
+                    res.status(401).json("Voter Not Found");
+                }
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error1: err
+                });
+            });
+
+        })
+          .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error2: err
+            });
+        });
+}         
    
 

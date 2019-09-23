@@ -45,5 +45,8 @@ router.post('/boothbyvillage', SchemaController.booth_by_village);
 //send msg
 router.post('/sendmsg', SchemaController.send_msg);
 
+//update_voting
+router.post('/updatevoting', SchemaController.update_voting);
+
 
 module.exports = router;
