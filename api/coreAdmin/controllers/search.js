@@ -85,7 +85,7 @@ exports.searchVoters = (req,res,next)=>{
   Voters.find({ $and : selector})
       .sort({"voterCreatedAt" : -1})
       .skip(0)
-      .limit(50)
+      .limit(200)
       .exec()
       .then(searchResults=>{
           res.status(200).json(searchResults);
