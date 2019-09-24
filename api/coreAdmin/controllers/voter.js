@@ -427,9 +427,11 @@ exports.deleteall_voters = (req,res,next)=>{
 
 //update featured
 exports.update_featured = (req,res,next)=>{
+    console.log("req.body.userId",req.body.userId);
     User.findOne({"_id" : req.body.userId})
         .exec()
         .then(user=>{
+            console.log("user",user);
             Voters.updateOne(
             { "_id" : req.body.voterId },                        
             {
