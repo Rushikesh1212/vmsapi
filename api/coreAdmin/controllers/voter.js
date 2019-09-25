@@ -196,6 +196,7 @@ exports.update_VoterData = (req,res,next)=>{
         .exec()
         .then(user=>{
             console.log("user",user);
+            console.log("req.body.voter_id",req.body.voter_id);
             Voters.updateOne(
             { "_id" : req.body.voter_id },                        
             {
