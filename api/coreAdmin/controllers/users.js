@@ -397,3 +397,24 @@ exports.reset_password = (req,res,next)=>{
 		});
    
 }
+
+
+exports.check_user_available = (req,res,next)=>{
+	User.find({_id:req.params.userId,"profile.status":"Active"})
+	.exec()
+	.then(user=>{ 
+		if(user && user.lenght>0){
+		    res.status(200).json("VALID");
+		}  
+		else{
+		    res.status(401).json("NOT_VALID");
+		}
+	})
+	.catch(err =>{
+	    console.log(err);
+	    res.status(500).json({
+	        error: err
+	    });
+	});
+
+}

@@ -23,4 +23,6 @@ router.patch('/patch/one/resetPassword/:userID',UserController.reset_password);
 
 router.patch('/patch/userStatus',UserController.user_status); 
 
+router.get('/get/useravailable',UserController.check_user_available); 
+
 module.exports = router;
