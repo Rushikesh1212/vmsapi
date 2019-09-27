@@ -166,29 +166,7 @@ exports.voters_updated_count = (req,res,next)=>{
     Users.find({})
         .exec()
         .then(users=>{
-          Voters.find({})
-            .exec()
-            .then(voters=>{
-              var userList = [];
-                  for (var i = users.length - 1; i >= 0; i--) {
-                    var voterCount = 0;
-                    var user = {
-                      "userId"          : users[i]._id,
-                      "userName"        : users[i].profile.fullName,
-                      "mobileNo"        : users[i].mobileNumber,
-                      "visitedCount"    : voterCount,
-                    }
-                    userList.push(user);
-                  }
-                res.status(200).json(userList);
-
-            })
-              .catch(err =>{
-                console.log(err);
-                res.status(500).json({
-                    error2: err
-                });
-            });
+            res.status(200).json(users);
         })
           .catch(err =>{
             console.log(err);
