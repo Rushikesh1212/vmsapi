@@ -335,7 +335,8 @@ exports.deleteall_voters = (req,res,next)=>{
                             }
                           }
               },
-            },       
+            },
+            { $sort: { _id: 1 } }        
             ])
             .exec()
             .then(boothName => {
