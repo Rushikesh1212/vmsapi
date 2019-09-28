@@ -84,7 +84,7 @@ exports.searchVoters = (req,res,next)=>{
     selector.push({"color" : req.body.color});
   }
 
-  console.log("selector = ", JSON.stringify(selector));
+  // console.log("selector = ", JSON.stringify(selector));
 
   Voters.find({ $and : selector})
       .sort({"voterCreatedAt" : -1})
