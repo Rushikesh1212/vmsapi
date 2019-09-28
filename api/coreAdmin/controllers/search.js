@@ -86,8 +86,8 @@ exports.searchVoters = (req,res,next)=>{
 
   // console.log("selector = ", JSON.stringify(selector));
 
-  Voters.find({ $and : selector})
-      .sort({"voterCreatedAt" : -1})
+  Voters.find({ $and : selector},{fullName:1,mFullName:1,mobileNumber:1,boothName:1,idNumber:1,age:1,gender:1})
+      .sort({"fullName" : -1})
       .skip(0)
       .limit(200)
       .exec()
