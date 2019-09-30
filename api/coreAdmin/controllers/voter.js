@@ -406,8 +406,6 @@ exports.deleteall_voters = (req,res,next)=>{
     });
 };
 
-
-
 //display duplicate voters as per booth
  exports.duplicate_voters = (req,res,next)=>{
   Voters.aggregate([

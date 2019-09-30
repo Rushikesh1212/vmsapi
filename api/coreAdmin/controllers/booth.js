@@ -19,7 +19,8 @@ exports.add_booth = (req,res,next)=>{
                 boothName         : req.body.boothName,
                 male              : req.body.male,
                 female            : req.body.female,
-                total             : req.body.total
+                total             : req.body.total,
+                villageName       : re1.body.villageName,
               });
             console.log("booth",booth)
              booth.save()
@@ -48,7 +49,7 @@ exports.add_booth = (req,res,next)=>{
 
 //search booth in boothlist
 exports.search_booth = (req,res,next)=>{
-  Booth.find({"boothName" : {"$regex":req.body.boothName,$options: "i"}})
+  Booth.find({"mBoothName" : {"$regex":req.body.boothName,$options: "i"}})
     .exec()
     .then(boothList => {
         res.status(200).json(boothList);
