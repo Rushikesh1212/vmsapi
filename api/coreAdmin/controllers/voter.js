@@ -294,8 +294,8 @@ exports.deleteall_voters = (req,res,next)=>{
     .then(voter => {
         if(voter){
         var voterNameArray = [];
-        voterNameArray.push({"firstName"  : voter.middleName,"lastName"   : voter.lastName});      
-        voterNameArray.push({"middleName" : voter.firstName,"lastName"   : voter.lastName});
+        voterNameArray.push({"firstName"  : voter.middleName, "lastName"  : voter.lastName, "boothName" : voter.boothName});      
+        voterNameArray.push({"middleName" : voter.firstName,  "lastName"  : voter.lastName, "boothName" : voter.boothName});
         selector.push({$or : voterNameArray });
              Voters.find({ $or : selector})
               .sort({"voterCreatedAt" : -1})
@@ -326,8 +326,9 @@ exports.deleteall_voters = (req,res,next)=>{
 //distinct booth
  exports.distinct_booth = (req,res,next)=>{
             Voters.aggregate([
-               {$group: { _id: "$boothName",
+               {$group: { _id: "$mBoothName",
                         total: {$sum: 1},
+                        "villageName": { "$first": "$mVillageName" },
                         Gender: {
                             $push: {
                                 male: {$cond: [{$eq: ["$gender", "M"]}, 1, 0]},
@@ -341,7 +342,7 @@ exports.deleteall_voters = (req,res,next)=>{
             .exec()
             .then(boothName => {
                 var boothList=[] 
-                
+                // console.log("boothName=>>>>>>>>>>>>>",boothName);
                 for (var i = boothName.length - 1; i > 0; i--) {
                     var male = 0;
                     var female = 0;
@@ -360,6 +361,7 @@ exports.deleteall_voters = (req,res,next)=>{
                             male      : male,
                             female    : female,
                             total     : total,
+                            villageName:boothName[i].villageName
                         }
                         if(i<boothName.length){
                             boothList.push(booth)
@@ -391,7 +393,7 @@ exports.deleteall_voters = (req,res,next)=>{
 
 //display voters as per booth
  exports.booth_voters = (req,res,next)=>{
-  Voters.find({'boothName':req.body.boothName})
+  Voters.find({'mBoothName':req.body.boothName})
     .exec()
     .then(boothName => {
         res.status(200).json(boothName);
@@ -477,7 +479,7 @@ exports.update_featured = (req,res,next)=>{
 exports.surname_list = (req,res,next)=>{
     Voters.aggregate([
             {
-              $match : {"boothName": req.body.boothName}
+              $match : {"mBoothName": req.body.boothName}
             },
             {
               $group : { _id:"$lastName", count:{$sum:1} }
@@ -503,7 +505,7 @@ exports.surname_list = (req,res,next)=>{
 exports.color_list = (req,res,next)=>{
     Voters.aggregate([
             {
-              $match : {"boothName": req.body.boothName}
+              $match : {"mBoothName": req.body.boothName}
             },
             {
               $group : { _id:"$color", count:{$sum:1} }
@@ -544,7 +546,7 @@ exports.color_list = (req,res,next)=>{
 
 //village list
  exports.village_list = (req,res,next)=>{
-  Voters.distinct('villageName')
+  Voters.distinct('mVillageName')
     .exec()
     .then(villageName => {
         res.status(200).json(villageName);
@@ -562,10 +564,10 @@ exports.color_list = (req,res,next)=>{
  exports.booth_by_village = (req,res,next)=>{
   Voters.aggregate([
             {
-              $match : {"villageName": req.body.villageName}
+              $match : {"mVillageName": req.body.villageName}
             },
             {
-              $group : { _id:"$boothName"}
+              $group : { _id:"$mBoothName"}
             }
         ])
     .exec()
