@@ -363,6 +363,7 @@ exports.deleteall_voters = (req,res,next)=>{
                             total     : total,
                             villageName:boothName[i].villageName
                         }
+                        console.log('booth',booth)
                         if(i<boothName.length){
                             boothList.push(booth)
                             axios.post("/api/booth/post",booth)
@@ -480,7 +481,7 @@ exports.surname_list = (req,res,next)=>{
               $match : {"mBoothName": req.body.boothName}
             },
             {
-              $group : { _id:"$lastName", count:{$sum:1} }
+              $group : { _id:"$mLastName", count:{$sum:1} }
             }
         ])
         .exec()

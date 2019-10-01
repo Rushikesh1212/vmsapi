@@ -9,6 +9,7 @@ exports.add_booth = (req,res,next)=>{
     Booth.find({"boothName" :req.body.boothName})
     .exec()
     .then(booth => {
+      console.log('booth',booth)
       if(booth && booth.length>0){
         return res.status(200).json({
           message:"BOOTH-ALREADY-EXIST"
@@ -20,9 +21,8 @@ exports.add_booth = (req,res,next)=>{
                 male              : req.body.male,
                 female            : req.body.female,
                 total             : req.body.total,
-                villageName       : re1.body.villageName,
+                villageName       : req.body.villageName,
               });
-            console.log("booth",booth)
              booth.save()
               .then(data=>{                                            
                  return res.status(200).json({
@@ -49,7 +49,7 @@ exports.add_booth = (req,res,next)=>{
 
 //search booth in boothlist
 exports.search_booth = (req,res,next)=>{
-  Booth.find({"mBoothName" : {"$regex":req.body.boothName,$options: "i"}})
+  Booth.find({"villageName" : {"$regex":req.body.mVillageName,$options: "i"}})
     .exec()
     .then(boothList => {
         res.status(200).json(boothList);

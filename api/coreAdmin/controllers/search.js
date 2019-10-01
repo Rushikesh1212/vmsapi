@@ -41,6 +41,10 @@ exports.searchVoters = (req,res,next)=>{
     selector.push({"boothName" : {"$regex":req.body.boothName,$options: "i"}});
   }
 
+  if(req.body.mBoothName && req.body.mBoothName !== ""){
+    selector.push({"mBoothName" : {"$regex":req.body.mBoothName,$options: "i"}});
+  }
+
     // for areaName ----------------------------------------------------
   if(req.body.areaName && req.body.areaName !== ""){
     selector.push({"areaName" : {"$regex":req.body.areaName,$options: "i"}});
@@ -86,7 +90,7 @@ exports.searchVoters = (req,res,next)=>{
 
   // console.log("selector = ", JSON.stringify(selector));
 
-  Voters.find({ $and : selector},{fullName:1,mFullName:1,mobileNumber:1,boothName:1,idNumber:1,age:1,gender:1})
+  Voters.find({ $and : selector},{fullName:1,mFullName:1,mobileNumber:1,boothName:1,idNumber:1,age:1,gender:1,mBoothName:1})
       .sort({"fullName" : -1})
       .skip(0)
       .limit(200)

@@ -5,7 +5,8 @@ const boothSchema = mongoose.Schema({
     boothName         : String,
     male              : Number,
     female            : Number,
-    total             : Number
+    total             : Number,
+    villageName       : String,
 });
 
 module.exports = mongoose.model('booths',boothSchema);
