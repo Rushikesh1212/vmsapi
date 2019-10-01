@@ -13,9 +13,7 @@ exports.searchVoters = (req,res,next)=>{
     var voterName = req.body.voterName;
     var voterNameArray = [];
 
-    voterNameArray.push({"lastName"   : {"$regex": voterName, $options: "i"}});
     voterNameArray.push({"fullName"   : {"$regex": voterName, $options: "i"}});
-    voterNameArray.push({"mLastName"   : {"$regex": voterName, $options: "i"}});
     voterNameArray.push({"mFullName"   : {"$regex": voterName, $options: "i"}});
 
     selector.push({$or : voterNameArray });
