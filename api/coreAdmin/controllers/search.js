@@ -32,11 +32,11 @@ exports.searchVoters = (req,res,next)=>{
 
    // for boothName ----------------------------------------------------
   if(req.body.boothName && req.body.boothName !== ""){
-    selector.push({"boothName" : {"$regex":req.body.boothName,$options: "i"}});
+    selector.push({"boothName" : req.body.boothName});
   }
 
   if(req.body.mBoothName && req.body.mBoothName !== ""){
-    selector.push({"mBoothName" : {"$regex":req.body.mBoothName,$options: "i"}});
+    selector.push({"mBoothName" : req.body.mBoothName});
   }
 
     // for areaName ----------------------------------------------------
