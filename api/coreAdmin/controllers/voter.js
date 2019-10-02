@@ -566,7 +566,7 @@ exports.color_list = (req,res,next)=>{
               $match : {"mVillageName": req.body.villageName}
             },
             {
-              $group : { _id:"$mBoothName"}
+              $group : { _id:{mBoothName:"$mBoothName",boothName:"$boothName"}}
             }
         ])
     .exec()
