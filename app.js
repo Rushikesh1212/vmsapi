@@ -4,12 +4,13 @@
 	const bodyParser 					= require('body-parser');// this package use to formate json data 
 	const mongoose 						= require ('mongoose');
 	var nodeMailer   					= require('nodemailer');
+	const globalVariable 				= require('./nodemon.js');
 	const axios 		= require('axios');
 
-	const dbname = "vms";
-	global.JWT_KEY = "secret";
+	// const dbname = "vms";
+	// global.JWT_KEY = "secret";
 
-	mongoose.connect('mongodb://localhost/'+dbname,{
+	mongoose.connect('mongodb://localhost/'+globalVariable.dbname,{
 		useNewUrlParser: true
 	})
 
