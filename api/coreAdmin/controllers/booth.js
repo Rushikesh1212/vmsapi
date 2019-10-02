@@ -5,11 +5,11 @@ const Booth         = require('../models/booth');
 const axios         = require('axios');
 
 exports.add_booth = (req,res,next)=>{
-    console.log('req=>',req.body);
+    // console.log('req=>',req.body);
     Booth.find({"boothName" :req.body.boothName})
     .exec()
     .then(booth => {
-      console.log('booth',booth)
+      // console.log('booth',booth)
       if(booth && booth.length>0){
         return res.status(200).json({
           message:"BOOTH-ALREADY-EXIST"

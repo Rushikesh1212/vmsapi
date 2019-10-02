@@ -78,7 +78,7 @@ exports.create_Voters = (req,res,next)=>{
 
 
 exports.create_single_voter = (req,res,next)=>{
-    console.log('req=>',req.body);
+    // console.log('req=>',req.body);
     const voters = new Voters({
          _id              : new mongoose.Types.ObjectId(),
         age               : req.body.age,
@@ -184,7 +184,7 @@ exports.single_voter = (req,res,next)=>{
 
 
 exports.update_VoterData = (req,res,next)=>{
-    console.log("req.body.userId",req.body.userId);
+    // console.log("req.body.userId",req.body.userId);
     // var d = new Date();
     // var month = '' + (d.getMonth() + 1);  
     // var day   = '' + d.getDate();         
@@ -251,7 +251,6 @@ exports.update_VoterData = (req,res,next)=>{
 
 //delete voter
 exports.delete_voter = function (req, res,next) {
-    console.log("a");
     Voters.deleteOne({
         _id: req.params.voterId
     }, function (err) {
@@ -363,7 +362,7 @@ exports.deleteall_voters = (req,res,next)=>{
                             total     : total,
                             villageName:boothName[i].villageName
                         }
-                        console.log('booth',booth)
+                        // console.log('booth',booth)
                         if(i<boothName.length){
                             boothList.push(booth)
                             axios.post("/api/booth/post",booth)
@@ -430,11 +429,11 @@ exports.deleteall_voters = (req,res,next)=>{
 
 //update featured
 exports.update_featured = (req,res,next)=>{
-    console.log("req.body.userId",req.body.userId);
+    // console.log("req.body.userId",req.body.userId);
     User.findOne({"_id" : req.body.userId})
         .exec()
         .then(user=>{
-            console.log("user",user);
+            // console.log("user",user);
             Voters.updateOne(
             { "_id" : req.body.voterId },                        
             {
@@ -587,12 +586,12 @@ exports.send_msg = (req,res,next)=>{
     Voters.findOne({"_id":req.body.voterId})
         .exec()
         .then(voter=>{
-            console.log("voter",voter);
-            console.log("inside=>>>>")
+            // console.log("voter",voter);
+            // console.log("inside=>>>>")
             // var text = "Dear "+voter.fullName+',\n'+"your data updated"; 
             var text="%e0%a4%a8%e0%a4%ae%e0%a4%b8%e0%a5%8d%e0%a4%95%e0%a4%be%e0%a4%b0%2c%20%0a%e0%a4%86%e0%a4%aa%e0%a4%b2%e0%a5%8d%e0%a4%af%e0%a4%be%20%e0%a4%ae%e0%a4%be%e0%a4%a2%e0%a4%be%20%e0%a4%b5%e0%a4%bf%e0%a4%a7%e0%a4%be%e0%a4%a8%e0%a4%b8%e0%a4%ad%e0%a4%be%20%e0%a4%ae%e0%a4%a4%e0%a4%a6%e0%a4%be%e0%a4%b0%e0%a4%b8%e0%a4%82%e0%a4%98%e0%a4%be%e0%a4%9a%e0%a4%be%20%e0%a4%b2%e0%a5%8b%e0%a4%95%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%a4%e0%a4%bf%e0%a4%a8%e0%a4%bf%e0%a4%a7%e0%a5%80%20%e0%a4%ae%e0%a5%8d%e0%a4%b9%e0%a4%a3%e0%a5%82%e0%a4%a8%20%e0%a4%86%e0%a4%aa%e0%a4%b2%e0%a5%8d%e0%a4%af%e0%a4%be%20%e0%a4%b5%e0%a4%bf%e0%a4%b6%e0%a5%8d%e0%a4%b5%e0%a4%be%e0%a4%b8%e0%a4%be%e0%a4%b2%e0%a4%be%20%e0%a4%aa%e0%a4%be%e0%a4%a4%e0%a5%8d%e0%a4%b0%20%e0%a4%a0%e0%a4%b0%e0%a4%a3%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%9a%e0%a4%be%20%e0%a4%ae%e0%a5%80%20%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%be%e0%a4%ae%e0%a4%be%e0%a4%a3%e0%a4%bf%e0%a4%95%20%e0%a4%aa%e0%a5%8d%e0%a4%b0%e0%a4%af%e0%a4%a4%e0%a5%8d%e0%a4%a8%20%e0%a4%95%e0%a5%87%e0%a4%b2%e0%a4%be%20%e0%a4%86%e0%a4%b9%e0%a5%87.%20%e0%a4%af%e0%a4%be%e0%a4%b5%e0%a4%b0%e0%a5%8d%e0%a4%b7%e0%a5%80%20%e0%a4%ae%e0%a5%80%20%e0%a4%ae%e0%a4%b9%e0%a4%be%e0%a4%af%e0%a5%81%e0%a4%a4%e0%a5%80%e0%a4%95%e0%a4%a1%e0%a5%82%e0%a4%a8%20%e0%a4%a8%e0%a4%bf%e0%a4%b5%e0%a4%a1%e0%a4%a3%e0%a5%82%e0%a4%95%20%e0%a4%b2%e0%a4%a2%e0%a4%b5%e0%a4%a4%20%e0%a4%85%e0%a4%b8%e0%a5%82%e0%a4%a8%20%e0%a4%ae%e0%a4%b2%e0%a4%be%20%e0%a4%aa%e0%a5%81%e0%a4%a8%e0%a5%8d%e0%a4%b9%e0%a4%be%20%e0%a4%8f%e0%a4%95%e0%a4%a6%e0%a4%be%20%e0%a4%86%e0%a4%aa%e0%a4%b2%e0%a5%80%20%e0%a4%b8%e0%a4%be%e0%a4%a5%20%e0%a4%b9%e0%a4%b5%e0%a5%80%20%e0%a4%86%e0%a4%b9%e0%a5%87.%20%e0%a4%af%e0%a5%87%e0%a4%a4%e0%a5%8d%e0%a4%af%e0%a4%be%2021%20%e0%a4%91%e0%a4%95%e0%a5%8d%e0%a4%9f%e0%a5%8b%e0%a4%ac%e0%a4%b0%20%e0%a4%b0%e0%a5%8b%e0%a4%9c%e0%a5%80%20%e0%a4%86%e0%a4%aa%e0%a4%a3%20%e0%a4%b8%e0%a4%b0%e0%a5%8d%e0%a4%b5%e0%a4%be%e0%a4%82%e0%a4%a8%e0%a5%80%20%e0%a4%ae%e0%a4%a4%e0%a4%a6%e0%a4%be%e0%a4%a8%20%e0%a4%af%e0%a4%82%e0%a4%a4%e0%a5%8d%e0%a4%b0%e0%a4%be%e0%a4%b5%e0%a4%b0%e0%a5%80%e0%a4%b2%20%e0%a4%ac%e0%a4%ac%e0%a4%a8%e0%a4%b0%e0%a4%be%e0%a4%b5%20%e0%a4%b6%e0%a4%bf%e0%a4%82%e0%a4%a6%e0%a5%87%20%e0%a4%af%e0%a4%be%20%e0%a4%a8%e0%a4%be%e0%a4%b5%e0%a4%be%e0%a4%b8%e0%a4%ae%e0%a5%8b%e0%a4%b0%e0%a5%80%e0%a4%b2%20%e0%a4%95%e0%a4%ae%e0%a4%b3%20%e0%a4%9a%e0%a4%bf%e0%a4%a8%e0%a5%8d%e0%a4%b9%e0%a4%be%e0%a4%9a%e0%a5%87%20%e0%a4%ac%e0%a4%9f%e0%a4%a8%20%e0%a4%a6%e0%a4%be%e0%a4%ac%e0%a5%82%e0%a4%a8%20%e0%a4%86%e0%a4%aa%e0%a4%b2%e0%a5%80%20%e0%a4%b8%e0%a5%87%e0%a4%b5%e0%a4%be%20%e0%a4%95%e0%a4%b0%e0%a4%a3%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%9a%e0%a5%80%20%e0%a4%b8%e0%a4%82%e0%a4%a7%e0%a5%80%20%e0%a4%a6%e0%a5%8d%e0%a4%af%e0%a4%be%e0%a4%b5%e0%a5%80%20%e0%a4%b9%e0%a5%80%20%e0%a4%b5%e0%a4%bf%e0%a4%a8%e0%a4%82%e0%a4%a4%e0%a5%80.%0a%e0%a4%a7%e0%a4%a8%e0%a5%8d%e0%a4%af%e0%a4%b5%e0%a4%be%e0%a4%a6%2c%0a%e0%a4%ac%e0%a4%ac%e0%a4%a8%e0%a4%b0%e0%a4%be%e0%a4%b5%20%e0%a4%b6%e0%a4%bf%e0%a4%82%e0%a4%a6%e0%a5%87";
             const url = "http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+voter.mobileNumber+"&message="+text+"&senderid=RANJIT&accusage=1&unicode=1";
-            console.log("url",url)
+            // console.log("url",url)
             axios.get(url)
               .then(response => {
                 return res.status(200).json({
@@ -618,7 +617,7 @@ exports.update_voting = (req,res,next)=>{
     User.findOne({"_id" : req.body.userId})
         .exec()
         .then(user=>{
-            console.log("user",user);
+            // console.log("user",user);
             Voters.updateOne(
             { "_id" : req.body.voter_id },                        
             {

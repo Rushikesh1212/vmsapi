@@ -11,7 +11,7 @@ exports.add_user = (req,res,next)=>{
 	User.findOne({"emails.address":req.body.email})
 		.exec()
 		.then(user =>{
-			console.log("user",user)
+			// console.log("user",user)
 			if(user){
 				return res.status(200).json({
 					message:"USER-ALREADY-EXIST"
@@ -25,7 +25,7 @@ exports.add_user = (req,res,next)=>{
                   .then(data =>{
                   	var data1=data.length+101
 						 userName    = "Madha"+data1;
-						console.log("userName",userName);
+						// console.log("userName",userName);
 					 })
 	                  .catch(err =>{
 	                      console.log(err);
@@ -36,7 +36,7 @@ exports.add_user = (req,res,next)=>{
 				}else{
 					var pwd =req.body.pwd;
 				}	
-				console.log("pwd",pwd);
+				// console.log("pwd",pwd);
 				bcrypt.hash(pwd,10,(err,hash)=>{
 					if(err){
 						return res.status(500).json({
@@ -116,28 +116,24 @@ exports.add_user = (req,res,next)=>{
 	User.findOne({"emails.userName":req.body.userName,roles:"User","profile.status":"Active"})
 		.exec()
 		.then(user => {
-			console.log("user",user)
+			// console.log("user",user)
 			if(user){
-				console.log("PWD===>",user);
+				// console.log("PWD===>",user);
 			var pwd = user.services.password.bcrypt;
 			}else{
 				return res.status(401).json({
 					message: 'Auth failed'
 				});	
 			}
-			console.log("pwd",req.body.pwd)
+			// console.log("pwd",req.body.pwd)
 			if(pwd){
-				console.log("PWD===>");
 				bcrypt.compare(req.body.pwd,pwd,(err,result)=>{
 					if(err){
-						console.log("Inside 1")
 						return res.status(401).json({
 							message: 'Auth failed'
 						});		
 					}
 					if(result){
-						console.log("Inside 2")
-
 						const token = jwt.sign({
 							email 	: req.body.email,
 							userId	:  user._id,
@@ -155,7 +151,6 @@ exports.add_user = (req,res,next)=>{
 							userName:user.profile.firstName+' '+user.profile.lastName
 						});	
 					}
-						console.log("Inside 1")
 
 					return res.status(401).json({
 						message: 'Auth failed'
@@ -173,28 +168,24 @@ exports.add_user = (req,res,next)=>{
 
 //admin Login
  exports.admin_login = (req,res,next)=>{
- 	console.log("req.body.email",req.body.email)
+ 	// console.log("req.body.email",req.body.email)
 	User.findOne({"emails.address":req.body.email,"roles":"Admin"})
 		.exec()
 		.then(user => {
 			console.log("user",user)
 			if(user){
-				console.log("PWD===>",user);
+				// console.log("PWD===>",user);
 			var pwd = user.services.password.bcrypt;
 			}
-			console.log("pwd",req.body.pwd)
+			// console.log("pwd",req.body.pwd)
 			if(pwd){
-				console.log("PWD===>");
 				bcrypt.compare(req.body.pwd,pwd,(err,result)=>{
 					if(err){
-						console.log("Inside 1")
 						return res.status(401).json({
 							message: 'Auth failed'
 						});		
 					}
 					if(result){
-						console.log("Inside 2")
-
 						const token = jwt.sign({
 							email 	: req.body.email,
 							userId	:  user._id,
@@ -211,7 +202,7 @@ exports.add_user = (req,res,next)=>{
 							user_ID:user._id,
 						});	
 					}
-						console.log("Inside 1")
+						// console.log("Inside 1")
 
 					return res.status(401).json({
 						message: 'Auth failed'
@@ -233,7 +224,7 @@ exports.users_list = (req,res,next)=>{
 		.sort({createdAt:-1})
 		.exec()
 		.then(users =>{
-			console.log('users ',users);
+			// console.log('users ',users);
 			res.status(200).json(users);
 		})
 		.catch(err =>{
@@ -264,9 +255,9 @@ exports.update_user = (req,res,next)=>{
         )
         .exec()
         .then(data=>{
-            console.log('data ',data);
+            // console.log('data ',data);
             if(data.nModified == 1){
-				console.log('data =========>>>',data);
+				// console.log('data =========>>>',data);
                 res.status(200).json("User Updated");
             }else{
                 res.status(401).json("User Not Found");
@@ -309,7 +300,7 @@ exports.user_status = function (req, res,next) {
         )
         .exec()
         .then(data=>{
-            console.log('data ',data);
+            // console.log('data ',data);
             if(data.nModified == 1){
 				// console.log('data =========>>>',data);
                 res.status(200).json("User "+req.body.userStatus);
@@ -329,7 +320,7 @@ exports.user_status = function (req, res,next) {
 //Regenerate Password
 exports.reset_password = (req,res,next)=>{
 	// var roleData = req.body.role;
-	console.log("req.params.userID",req.params.userID);
+	// console.log("req.params.userID",req.params.userID);
 		var pwd = "madha"+Math.floor(Math.random() * 1000) + 1;
 
 			bcrypt.hash(pwd,10,(err,hash)=>{
@@ -352,14 +343,14 @@ exports.reset_password = (req,res,next)=>{
 			)
 			.exec()
 			.then(resetPassword=>{
-			    console.log('resetPassword ',resetPassword);
+			    // console.log('resetPassword ',resetPassword);
 			    if(resetPassword.nModified == 1){
 			    	User.find({_id:req.params.userID})
 					.exec()
 					.then(user=>{
-						console.log("user",user);
+						// console.log("user",user);
 						if(user && user.length>0){
-								console.log("inside=>>>>")
+								// console.log("inside=>>>>")
 								var text = "Dear "+user[0].profile.firstName+',\n'+"Your New credential for app as follows: \n"+"Username : "+user[0].emails[0].userName+"\nPassword : "+pwd+"\nThank You!"; 	
 								const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+user[0].profile.mobileNumber+"&message="+text+"&senderid=APPREG&accusage=1"
 								axios.get(url)

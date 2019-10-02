@@ -5,8 +5,8 @@ const Users          = require('../models/users');
 
 // Activity Log
 exports.user_activity = (req,res,next)=>{
-  console.log("req.body.fromDate",req.body.fromDate)
-  console.log("req.body.fromDate",req.body.toDate)
+  // console.log("req.body.fromDate",req.body.fromDate)
+  // console.log("req.body.fromDate",req.body.toDate)
     Voters.find({"voterUpdateStatus" : {
       $elemMatch: {
         UserId : 1,
@@ -178,11 +178,11 @@ exports.voters_updated_count = (req,res,next)=>{
 
 //voters_updated_by_user
 exports.voters_updated_by_user = (req,res,next)=>{
-  console.log("req.body.userId",req.body.userId)
+  // console.log("req.body.userId",req.body.userId)
   Users.find({"_id":mongoose.Types.ObjectId(req.body.userId)},{"profile.fullName":1,mobileNumber:1})
       .exec()
       .then(users=>{
-        console.log(Users)
+        // console.log(Users)
         Voters.find({"voterUpdateStatus":{$elemMatch:{"UserId":mongoose.Types.ObjectId(req.body.userId)}}},{fullName:1,mobileNumber:1,"voterUpdateStatus.UserId":1,"voterUpdateStatus.updatedAt":1,idNumber:1})
           .exec()
           .then(voters=>{
