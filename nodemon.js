@@ -1,5 +1,5 @@
 module.exports = { 
-	"port"	: 5016,
+	"port"	: 5014,
 	"JWT_KEY" : "secret",
 	"dbname"	: "vms"
 };
