@@ -4,7 +4,7 @@ const jwt			= require("jsonwebtoken");
 const plivo 		= require('plivo');
 const User 			= require('../models/users');
 const axios 		= require('axios');
-
+const globalVariable 	= require('../../../nodemon.js');
 //*******************VMS********************
 //VMS SIgnUP
 exports.add_user = (req,res,next)=>{
@@ -141,7 +141,7 @@ exports.add_user = (req,res,next)=>{
 						const token = jwt.sign({
 							email 	: req.body.email,
 							userId	:  user._id,
-						},global.JWT_KEY,
+						},globalVariable.JWT_KEY,
 						{
 							expiresIn: "24h"
 						}
@@ -198,7 +198,7 @@ exports.add_user = (req,res,next)=>{
 						const token = jwt.sign({
 							email 	: req.body.email,
 							userId	:  user._id,
-						},global.JWT_KEY,
+						},globalVariable.JWT_KEY,
 						{
 							expiresIn: "24h"
 						}
