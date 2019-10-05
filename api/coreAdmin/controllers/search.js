@@ -14,7 +14,7 @@ exports.searchVoters = (req,res,next)=>{
     var voterNameArray = [];
     var tempVoter = voterName.split(" ");
     console.log("tempVoter",tempVoter);
-    if(tempVoter && tempVoter.length>1){
+    if(tempVoter && tempVoter.length==2){
       voterNameArray.push({$and : [{"firstName"  : {"$regex": tempVoter[0], $options: "i"}},{"lastName" : {"$regex": tempVoter[1], $options: "i"}}]});
       voterNameArray.push({$and : [{"mFirstName"  : {"$regex": tempVoter[0], $options: "i"}},{"mLastName" : {"$regex": tempVoter[1], $options: "i"}}]});
     }
