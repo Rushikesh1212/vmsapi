@@ -150,7 +150,7 @@ exports.create_single_voter = (req,res,next)=>{
 exports.voters_list = (req,res,next)=>{
     Voters.find({})
         .skip(0)
-        .limit(50)
+        .limit(200)
         // .sort({createdAt:-1})
         .exec()
         .then(voters =>{
