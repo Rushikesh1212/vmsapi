@@ -14,12 +14,12 @@ exports.searchVoters = (req,res,next)=>{
     var voterNameArray = [];
     var tempVoter = voterName.split(" ");
     console.log("tempVoter",tempVoter);
-    voterNameArray.push({"fullName"   : {"$regex": voterName, $options: "i"}});
-    voterNameArray.push({"mFullName"  : {"$regex": voterName, $options: "i"}});
     if(tempVoter && tempVoter.length>1){
       voterNameArray.push({$and : [{"firstName"  : {"$regex": tempVoter[0], $options: "i"}},{"lastName" : {"$regex": tempVoter[1], $options: "i"}}]});
       voterNameArray.push({$and : [{"mFirstName"  : {"$regex": tempVoter[0], $options: "i"}},{"mLastName" : {"$regex": tempVoter[1], $options: "i"}}]});
     }
+    voterNameArray.push({"fullName"   : {"$regex": voterName, $options: "i"}});
+    voterNameArray.push({"mFullName"  : {"$regex": voterName, $options: "i"}});
 
     selector.push({$or : voterNameArray });
 
@@ -92,7 +92,7 @@ exports.searchVoters = (req,res,next)=>{
   Voters.find({ $and : selector},{fullName:1,mFullName:1,mobileNumber:1,boothName:1,idNumber:1,age:1,gender:1,mBoothName:1})
       .sort({"fullName" : -1})
       .skip(0)
-      .limit(200)
+      .limit(300)
       .exec()
       .then(searchResults=>{
           res.status(200).json(searchResults);
