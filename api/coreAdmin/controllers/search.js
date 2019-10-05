@@ -12,9 +12,11 @@ exports.searchVoters = (req,res,next)=>{
     if(req.body.voterName && req.body.voterName != ""){
     var voterName = req.body.voterName;
     var voterNameArray = [];
-
+    var tempVoter = voterName.split(" ");
+    console.log("tempVoter",tempVoter);
     voterNameArray.push({"fullName"   : {"$regex": voterName, $options: "i"}});
-    voterNameArray.push({"mFullName"   : {"$regex": voterName, $options: "i"}});
+    voterNameArray.push({"mFullName"  : {"$regex": voterName, $options: "i"}});
+    voterNameArray.push({"firstName"  : tempVoter[0]},{"lastName" : tempVoter[1]});
 
     selector.push({$or : voterNameArray });
 
