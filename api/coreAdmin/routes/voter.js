@@ -48,5 +48,7 @@ router.post('/sendmsg', SchemaController.send_msg);
 //update_voting
 router.post('/updatevoting', SchemaController.update_voting);
 
+router.post('/voterslist', SchemaController.voters_list_by_village);
+
 
 module.exports = router;

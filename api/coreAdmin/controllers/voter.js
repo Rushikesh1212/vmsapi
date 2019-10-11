@@ -658,3 +658,16 @@ exports.update_voting = (req,res,next)=>{
 }         
    
 
+ exports.voters_list_by_village = (req,res,next)=>{
+  Voters.find({'mVillageName':req.body.villageName})
+    .exec()
+    .then(voters => {
+        res.status(200).json(voters);
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};

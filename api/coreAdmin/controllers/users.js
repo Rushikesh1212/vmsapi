@@ -18,21 +18,22 @@ exports.add_user = (req,res,next)=>{
 				});
 			}else{
 				if(req.body.role === "User"){
-				var userName =""
-				var pwd 		= "madha"+Math.floor(Math.random() * 1000) + 1;
-				User.find()
-                  .exec()
-                  .then(data =>{
-                  	var data1=data.length+101
-						 userName    = "Madha"+data1;
-						// console.log("userName",userName);
-					 })
-	                  .catch(err =>{
-	                      console.log(err);
-	                      res.status(500).json({
-	                          error: err
-	                      });
-	                  });
+				var userName ="madha"
+				// var pwd 		= "madha"+Math.floor(Math.random() * 1000) + 1;
+				var pwd 		= "madha";
+				// User.find()
+    //               .exec()
+    //               .then(data =>{
+    //               	var data1=data.length+101
+				// 		 userName    = "Madha"+data1;
+				// 		// console.log("userName",userName);
+				// 	 })
+	   //                .catch(err =>{
+	   //                    console.log(err);
+	   //                    res.status(500).json({
+	   //                        error: err
+	   //                    });
+	   //                });
 				}else{
 					var pwd =req.body.pwd;
 				}	
@@ -73,9 +74,9 @@ exports.add_user = (req,res,next)=>{
 			            });	
 						user.save()
 							.then(newUser =>{
-								if(newUser){
-								var text = "Dear "+req.body.firstName+',\n'+"Your credential for app as follows: \n"+"Username : "+userName+"\nPassword : "+pwd+"\nThank You!"; 	
-								const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+req.body.mobileNumber+"&message="+text+"&senderid=APPREG&accusage=1"
+								// if(newUser){
+								// var text = "Dear "+req.body.firstName+',\n'+"Your credential for app as follows: \n"+"Username : "+userName+"\nPassword : "+pwd+"\nThank You!"; 	
+								// const url="http://smsgateway.digitalkarbhar.com/submitsms.jsp?user=Sidharth&key=3bd47e3528XX&mobile=+91"+req.body.mobileNumber+"&message="+text+"&senderid=APPREG&accusage=1"
 								axios.get(url)
 							      .then(response => {
 		                            return res.status(200).json({
@@ -89,7 +90,7 @@ exports.add_user = (req,res,next)=>{
 		                                error: msgError
 		                            });        
 		                        });       
-		                    }
+		                    // }
 							})
 							.catch(err =>{
 								console.log(err);
