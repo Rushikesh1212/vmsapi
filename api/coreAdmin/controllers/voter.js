@@ -10,6 +10,7 @@ exports.create_Voters = (req,res,next)=>{
             // console.log("Inside",req.body[i].age);
             const voters = new Voters({
                  _id              : new mongoose.Types.ObjectId(),
+                serialNo          : req.body[i].serialNo,
                 age               : req.body[i].age,
                 boothName         : req.body[i].boothName,
                 constituencyName  : req.body[i].constituencyName,
@@ -81,6 +82,7 @@ exports.create_single_voter = (req,res,next)=>{
     // console.log('req=>',req.body);
     const voters = new Voters({
          _id              : new mongoose.Types.ObjectId(),
+        serialNo          : req.body[i].serialNo, 
         age               : req.body.age,
         boothName         : req.body.boothName,
         constituencyName  : req.body.constituencyName,

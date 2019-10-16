@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const votersSchema = mongoose.Schema({
-	_id			      : mongoose.Schema.Types.ObjectId, 
+	_id			      : mongoose.Schema.Types.ObjectId,
+    serialNo          : Number,
     age               : Number,
     boothName         : String,
     constituencyName  : String,
